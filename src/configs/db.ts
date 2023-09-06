@@ -1,7 +1,7 @@
 import { Sequelize, QueryTypes } from "sequelize";
 
 export const dbConnection = new Sequelize(
-  "postgres://admin:password@localhost:5432/insta"
+  "postgres://admin:password@localhost:5432/insta_dev"
 );
 
 export class Db {

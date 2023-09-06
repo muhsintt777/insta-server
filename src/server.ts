@@ -1,10 +1,17 @@
 import { app } from "./app";
+import { dbConnection } from "./configs/db";
 const PORT = process.env.PORT || 3500;
 
 async function startServer() {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  try {
+    await dbConnection.authenticate();
+    app.listen(PORT, () => {
+      console.log(`Server started at ${PORT}`);
+    });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 }
 
 startServer();
