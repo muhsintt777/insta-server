@@ -1,8 +1,7 @@
 import { Sequelize, QueryTypes } from "sequelize";
+const dbUrl = process.env.DB_CONNECTION_URI || "";
 
-export const dbConnection = new Sequelize(
-  "postgres://admin:password@localhost:5432/insta_dev"
-);
+export const dbConnection = new Sequelize(dbUrl);
 
 export class Db {
   static async select(sql: string, replacements: any) {
