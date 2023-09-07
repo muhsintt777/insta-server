@@ -4,3 +4,17 @@ CREATE TABLE posts (
     caption VARCHAR(255) NOT NULL,
     likes INTEGER
 );
+
+ALTER TABLE posts
+ADD COLUMN createdAt TIMESTAMP DEFAULT current_timestamp;
+
+ALTER TABLE posts
+ADD COLUMN updatedAt TIMESTAMP DEFAULT current_timestamp;
+
+ALTER TABLE posts
+DROP COLUMN likes;
+
+ALTER TABLE posts
+ADD COLUMN likeCount BIGINT DEFAULT 0,
+ADD COLUMN commentCount BIGINT DEFAULT 0
+
