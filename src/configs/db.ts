@@ -14,7 +14,7 @@ export class Db {
   static async insert(sql: string, replacements: any) {
     return dbConnection.query(sql, {
       replacements,
-      type: QueryTypes.SELECT,
+      type: QueryTypes.INSERT,
     });
   }
 
