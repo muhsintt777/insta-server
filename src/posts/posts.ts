@@ -1,4 +1,4 @@
-interface Posts {
+export interface Posts {
   id: number;
   createdAt: number;
   updatedAt: number | null;
