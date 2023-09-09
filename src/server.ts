@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import { app } from "./app";
-import { dbConnection } from "./configs/db";
+import { dbConnection } from "configs/db";
 const PORT = process.env.PORT || "3500";
 
 async function startServer() {
