@@ -23,7 +23,8 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
-      "@configs/*": ["src/configs/*"]
+      "@configs/*": ["src/configs/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "exclude": ["node_modules"],
