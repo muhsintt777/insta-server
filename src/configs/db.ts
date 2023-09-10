@@ -4,7 +4,7 @@ const dbUrl = process.env.DB_CONNECTION_URI || "";
 export const dbConnection = new Sequelize(dbUrl);
 
 export class Db {
-  static async select(sql: string, replacements: any) {
+  static async select(sql: string, replacements: any): Promise<any[]> {
     return dbConnection.query(sql, {
       replacements,
       type: QueryTypes.SELECT,
