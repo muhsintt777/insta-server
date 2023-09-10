@@ -11,9 +11,9 @@ export class Db {
     });
   }
 
-  static async insert(sql: string, replacements: any) {
+  static async insert(sql: string, replacements: any): Promise<[any, any]> {
     return dbConnection.query(sql, {
-      replacements,
+      bind: replacements,
       type: QueryTypes.INSERT,
     });
   }
