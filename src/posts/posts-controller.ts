@@ -5,7 +5,7 @@ export class PostsController {
   static async getAllPost(_req: Request, res: Response) {
     try {
       const result = await PostsService.getAllPost();
-      res.status(200).json({ result });
+      res.status(200).json(result);
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {

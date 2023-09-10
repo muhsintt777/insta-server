@@ -1,17 +1,32 @@
 import { Db } from "configs/db";
 import { TABLES } from "configs/constants";
+import { Post } from "./posts";
 
 export class PostsService {
   static async getPost(id: number) {
     console.log(id, "id");
   }
 
-  static async getAllPost() {
+  static async getAllPost(): Promise<Post[]> {
     const sql = "SELECT * FROM posts";
     const result = await Db.select(sql, {});
     if (!result) throw { statusCode: 500, errorMessage: "DB selection failed" };
-    console.log(result, "select resu");
-    return 0;
+
+    const posts: Post[] = [];
+    result.forEach((item) => {
+      const obj = {
+        id: item.id,
+        createdAt: 23424242,
+        updatedAt: 43534535,
+        imageUrl: item.image_url,
+        caption: item.caption,
+        likeCount: Number(item.like_count),
+        commentCount: Number(item.comment_count),
+      } as Post;
+      posts.push(obj);
+    });
+
+    return posts;
   }
 
   static async addPost(

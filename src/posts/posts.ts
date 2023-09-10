@@ -1,10 +1,10 @@
-export interface Posts {
+export interface Post {
   id: number;
   createdAt: number;
   updatedAt: number | null;
   imageUrl: string | null;
   caption: string;
-  likes: number;
+  likeCount: number;
   commentCount: number;
 }
 
