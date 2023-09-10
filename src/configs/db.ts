@@ -18,6 +18,11 @@ export class Db {
     });
   }
 
+  static async delete(sql: string, replacements: any): Promise<any> {
+    return dbConnection.query(sql, {
+      bind: replacements,
+      type: QueryTypes.DELETE,
+    });
+  }
   static async update() {}
-  static async delete() {}
 }
