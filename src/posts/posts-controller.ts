@@ -19,7 +19,9 @@ export class PostsController {
   static async addPost(req: Request, res: Response) {
     try {
       const caption = req.body.caption as string;
-      const imageUrl = req.body.imageUrl as string | null;
+      let imageUrl = req.body.imageUrl as string | null;
+      if (!imageUrl) imageUrl = null;
+
       if (!caption) {
         res.status(400).json({ message: "caption required" });
         return;
