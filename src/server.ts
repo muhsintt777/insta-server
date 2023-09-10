@@ -8,6 +8,8 @@ const PORT = process.env.PORT || "3500";
 async function startServer() {
   try {
     await dbConnection.authenticate();
+    await dbConnection.sync();
+
     app.listen(PORT, () => {
       console.log(`Server started at ${PORT}`);
     });
