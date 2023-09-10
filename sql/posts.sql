@@ -18,3 +18,7 @@ ALTER TABLE posts
 ADD COLUMN likeCount BIGINT DEFAULT 0,
 ADD COLUMN commentCount BIGINT DEFAULT 0
 
+-- changed name for column likecount,createdat,updatedat and..
+ALTER TABLE posts
+RENAME COLUMN commentcount TO comment_count;
+
