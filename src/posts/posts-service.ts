@@ -42,4 +42,16 @@ export class PostsService {
 
     return id;
   }
+
+  static async deletePost(id: number): Promise<number> {
+    const sql = `DELETE FROM ${TABLES.POSTS} WHERE id = $id RETURNING id;`;
+    const replacements = { id };
+
+    const result = await Db.delete(sql, replacements);
+    if (!result || !result[0] || !result[0].id)
+      throw { statusCode: 404, errorMessage: "Unable to find post" };
+    const deletedId = result[0].id as number;
+
+    return deletedId;
+  }
 }

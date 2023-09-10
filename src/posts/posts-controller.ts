@@ -38,4 +38,23 @@ export class PostsController {
       }
     }
   }
+
+  static async deletePost(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id) as number;
+      if (!id) throw { statusCode: 400, errorMessage: "id required" };
+
+      const deletedId = await PostsService.deletePost(id);
+      res
+        .status(204)
+        .json({ message: "Post deleted successfully", id: deletedId });
+    } catch (err) {
+      console.log(err);
+      if (err.statusCode && err.errorMessage) {
+        res.status(err.statusCode).json({ message: err.errorMessage });
+      } else {
+        res.status(400).json({ message: "Something went wrong" });
+      }
+    }
+  }
 }
