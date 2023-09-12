@@ -1,9 +1,10 @@
 import { User } from "users/user";
 import { UserModal } from "users/user-modal";
 import { Crypto } from "utils/crypto";
+import { Token } from "utils/token";
 
 export class AuthService {
-  static async login(email: string, password: string) {
+  static async login(email: string, password: string): Promise<string> {
     const userArr = await UserModal.findAll({
       where: {
         email: email,
@@ -17,5 +18,7 @@ export class AuthService {
     if (!isAuthenticated) {
       throw { statusCode: 401, errorMessage: "email or password are invalid" };
     }
+
+    return Token.createAccessToken(user.email);
   }
 }

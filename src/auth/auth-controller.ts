@@ -13,8 +13,8 @@ export class AuthController {
         };
       }
 
-      await AuthService.login(email, password);
-      res.sendStatus(203);
+      const accessToken = await AuthService.login(email, password);
+      res.status(200).json({ accessToken });
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
