@@ -19,6 +19,6 @@ export class AuthService {
       throw { statusCode: 401, errorMessage: "email or password are invalid" };
     }
 
-    return Token.createAccessToken(user.email);
+    return Token.createAccessToken({ id: user.id, email: user.email });
   }
 }
