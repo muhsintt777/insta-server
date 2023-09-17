@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { TOKEN_COOKIE_AGE } from "configs/constants";
 import { AuthService } from "./auth-service";
 import { AuthValidation } from "./auth-validation";
 
@@ -10,13 +11,19 @@ export class AuthController {
         userCreds.email,
         userCreds.password
       );
-      res.status(200).json({ accessToken });
+
+      res.cookie("token", accessToken, {
+        httpOnly: true,
+        secure: true,
+        maxAge: TOKEN_COOKIE_AGE,
+      });
+      res.status(200).json({ message: "Login successfull" });
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
         res.status(err.statusCode).json({ message: err.errorMessage });
       } else {
-        res.status(400).json({ message: "Somthing went wrong" });
+        res.status(400).json({ message: "Something went wrong" });
       }
     }
   }
