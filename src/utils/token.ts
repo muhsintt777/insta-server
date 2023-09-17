@@ -9,7 +9,7 @@ interface PayloadType {
 
 export class Token {
   static createAccessToken(payload: PayloadType) {
-    return jwt.sign(payload, accessTokenKey, { expiresIn: "30s" });
+    return jwt.sign(payload, accessTokenKey, { expiresIn: "2m" });
   }
 
   static createRefreshToken(payload: PayloadType) {
