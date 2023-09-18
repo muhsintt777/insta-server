@@ -27,4 +27,20 @@ export class AuthController {
       }
     }
   }
+
+  static async getUser(req: Request, res: Response) {
+    try {
+      const { token } = AuthValidation.getUserReq(req.body);
+
+      const user = await AuthService.getUser(token.id);
+      res.status(200).json(user);
+    } catch (err) {
+      console.log(err);
+      if (err.statusCode && err.errorMessage) {
+        res.status(err.statusCode).json({ message: err.errorMessage });
+      } else {
+        res.status(400).json({ message: "Something went wrong" });
+      }
+    }
+  }
 }

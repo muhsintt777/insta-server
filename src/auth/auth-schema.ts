@@ -18,3 +18,19 @@ export const LoginReqSchema = z.object({
     .regex(REGEX.password, "Password is not valid"),
 });
 export type LoginReqType = z.infer<typeof LoginReqSchema>;
+
+export const GetUserReqSchema = z.object({
+  token: z.object({
+    id: z
+      .number({
+        required_error: "ID not found",
+        invalid_type_error: "ID is not number",
+      })
+      .int(),
+    email: z.string().regex(REGEX.email),
+    iat: z.number().int(),
+    exp: z.number().int(),
+  }),
+});
+
+export type GetUserReqType = z.infer<typeof GetUserReqSchema>;

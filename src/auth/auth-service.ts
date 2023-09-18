@@ -24,4 +24,19 @@ export class AuthService {
 
     return Token.createAccessToken({ id: user.id, email: user.email });
   }
+
+  static async getUser(id: number): Promise<Omit<User, "password">> {
+    const userArr = await UserModal.findAll({
+      where: {
+        id: id,
+      },
+    });
+    if (!userArr.length)
+      throw { statusCode: 404, errorMessage: "User not found" };
+
+    const user = userArr[0]?.toJSON();
+    delete user.password;
+    const mutatedUser: Omit<User, "password"> = user;
+    return mutatedUser;
+  }
 }
