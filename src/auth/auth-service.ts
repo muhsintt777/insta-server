@@ -10,8 +10,11 @@ export class AuthService {
         email: email,
       },
     });
-    if (!userArr) throw { statusCode: 404, errorMessage: "User not found" };
-    const user: User = userArr[0].toJSON();
+    if (!userArr.length)
+      throw { statusCode: 404, errorMessage: "User not found" };
+    const user: User = userArr[0]?.toJSON();
+
+    // if (!user) throw { statusCode: 400, errorMessage: "User not found" };
 
     const isAuthenticated = await Crypto.compare(password, user.password);
 
