@@ -7,7 +7,7 @@ export class UserService {
 
   static async createUser(
     firstName: string,
-    lastName: string | null,
+    lastName: string | null | undefined,
     email: string,
     password: string
   ): Promise<User> {
