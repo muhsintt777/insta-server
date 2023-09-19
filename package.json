@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "dev": "ts-node-dev -r tsconfig-paths/register ./src/server.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/server.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
