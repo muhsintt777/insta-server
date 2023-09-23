@@ -6,7 +6,7 @@ const accessTokenKey = process.env.ACCESS_TOKEN_KEY as string;
 export class AuthMiddleware {
   static verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.headers["authorization"]?.split(" ")[1];
+      const token = req.cookies.token;
       if (!token) {
         throw { statusCode: 401, errorMessage: "Auth token required" };
       }
