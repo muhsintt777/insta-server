@@ -1,6 +1,11 @@
 import { Db } from "configs/db";
 import { TABLES } from "configs/constants";
-import { Post } from "./posts";
+import { Post, PostsColumn } from "./posts";
+
+// interface ColStatus {
+//   name: "status";
+//   value: 1 | 2;
+// }
 
 export class PostsService {
   static async getPost(id: number) {
@@ -42,6 +47,20 @@ export class PostsService {
     const id = result[0][0].id as number;
 
     return id;
+  }
+
+  static async updatePost(id: number, columns: PostsColumn) {
+    const setStrings: string[] = [];
+    columns.forEach((item) => {
+      setStrings.push(`${item.name} = ${item.value}`);
+    });
+
+    const sql = `UPDATE ${TABLES.POSTS}
+    SET ${setStrings.join}
+    WHERE id = ${id};`;
+
+    const result = await Db.update(sql, {});
+    console.log(result, "resultss update");
   }
 
   static async deletePost(id: number): Promise<number> {

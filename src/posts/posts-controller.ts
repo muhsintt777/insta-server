@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { FILE_TYPE } from "configs/constants";
 import { storageBucket } from "configs/storage-bucket";
 import { PostsService } from "./posts-service";
+import crypto from "crypto";
+import { PostsColumn } from "./posts";
 
 const bucketName = process.env.STORAGE_BUCKET_NAME;
 
@@ -43,14 +45,19 @@ export class PostsController {
         fileType === FILE_TYPE.imageJPEG ||
         fileType === FILE_TYPE.imageJPG
       ) {
-        const id = await PostsService.addPost(caption, null, 1);
+        const fileName = crypto.randomBytes(16).toString("hex");
+
         const signedUrl = storageBucket.getSignedUrl("putObject", {
           Bucket: bucketName,
-          Key: `posts-${id}`,
+          Key: `posts-${fileName}`,
           // ACL: "public-read",
           ContentType: fileType,
         });
 
+        const imageUrl = signedUrl.split("?")[0];
+
+        //1 === processing
+        const id = await PostsService.addPost(caption, imageUrl, 1);
         res.status(201).json({ id, signedUrl });
         return;
       }
@@ -58,6 +65,33 @@ export class PostsController {
 
       const id = await PostsService.addPost(caption, null, 2);
       res.status(201).json({ id });
+    } catch (err) {
+      console.log(err);
+      if (err.statusCode && err.errorMessage) {
+        res.status(err.statusCode).json({ message: err.errorMessage });
+      } else {
+        res.status(400).json({ message: "Something went wrong" });
+      }
+    }
+  }
+
+  static async updatePost(req: Request, res: Response) {
+    try {
+      const id = req.body.id as number | undefined;
+      if (!id) throw { statusCode: 400, errorMessage: "idd reqired" };
+
+      const status = req.body.status as number | undefined;
+      const caption = req.body.caption as string | undefined;
+      if (!status && !caption) {
+        throw { statusCode: 400, errorMessage: "bass reqest" };
+      }
+
+      const columns: PostsColumn = [];
+      if (status) columns.push({ name: "status", value: 2 });
+      if (caption) columns.push({ name: "caption", value: caption });
+
+      await PostsService.updatePost(id, columns);
+      res.status(200).json({ message: "updateddd" });
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
