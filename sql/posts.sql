@@ -22,3 +22,6 @@ ADD COLUMN commentCount BIGINT DEFAULT 0
 ALTER TABLE posts
 RENAME COLUMN commentcount TO comment_count;
 
+ALTER TABLE posts
+ADD status INTEGER CHECK (status IN (1, 2));
+
