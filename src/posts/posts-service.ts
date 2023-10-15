@@ -31,10 +31,11 @@ export class PostsService {
 
   static async addPost(
     caption: string,
-    imageUrl: string | null
+    imageUrl: string | null,
+    status: 1 | 2
   ): Promise<number> {
-    const sql = `INSERT INTO ${TABLES.POSTS} (caption, imageUrl) VALUES ($value1, $value2) RETURNING id`;
-    const replacements = { value1: caption, value2: imageUrl };
+    const sql = `INSERT INTO ${TABLES.POSTS} (caption, imageUrl, status) VALUES ($value1, $value2, $value3) RETURNING id`;
+    const replacements = { value1: caption, value2: imageUrl, value3: status };
 
     const result = await Db.insert(sql, replacements);
     if (!result) throw { statusCode: 500, errorMessage: "DB insert failed" };
