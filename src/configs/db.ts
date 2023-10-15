@@ -24,5 +24,11 @@ export class Db {
       type: QueryTypes.DELETE,
     });
   }
-  static async update() {}
+
+  static async update(sql: string, replacements: any): Promise<any> {
+    return dbConnection.query(sql, {
+      bind: replacements,
+      type: QueryTypes.UPDATE,
+    });
+  }
 }
