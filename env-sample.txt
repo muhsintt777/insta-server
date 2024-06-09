@@ -1,4 +1,5 @@
 PORT=server running port
+DB_PORT=database port
 DB_CONNECTION_URI=databse conncection url
 REFRESH_TOKEN_KEY=secret key
 ACCESS_TOKEN_KEY=secret key
