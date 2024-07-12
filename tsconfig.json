@@ -24,7 +24,9 @@
     "baseUrl": "./src",
     "paths": {
       "@configs/*": ["src/configs/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@modules/*": ["src/modules/*"]
     }
   },
   "exclude": ["node_modules"],
