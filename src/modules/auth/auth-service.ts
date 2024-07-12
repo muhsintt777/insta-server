@@ -1,5 +1,5 @@
-import { User } from "users/user";
-import { UserModal } from "users/user-modal";
+import { UserModal } from "modules/users/user-modal";
+import { User } from "modules/users/user";
 import { Crypto } from "utils/crypto";
 import { Token } from "utils/token";
 
