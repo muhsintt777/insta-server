@@ -40,4 +40,15 @@ export class UserService {
       throw err;
     }
   }
+
+  static async deleteUser(id: string): Promise<string> {
+    try {
+      const result = await UserModel.findByIdAndDelete(id);
+      if (!result) throw new Error("no user found");
+      return result.id;
+    } catch (error) {
+      console.log("deleteUser error", error);
+      throw error;
+    }
+  }
 }

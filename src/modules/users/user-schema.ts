@@ -33,11 +33,9 @@ export const CreateUserReqSchema = z.object({
 });
 export type CreateUserReqType = z.infer<typeof CreateUserReqSchema>;
 
-export const GetUserReqSchema = z.object({
-  id: z
-    .string({
-      required_error: "Id required",
-      invalid_type_error: "Invalid type",
-    })
-    .trim(),
-});
+export const UserIdSchema = z
+  .string({
+    required_error: "Id required",
+    invalid_type_error: "Invalid type",
+  })
+  .trim();

@@ -1,5 +1,5 @@
 import { getZodErrMessage } from "utils/validation";
-import { CreateUserReqSchema, GetUserReqSchema } from "./user-schema";
+import { CreateUserReqSchema, UserIdSchema } from "./user-schema";
 
 export class UserValidation {
   static createUserReq(reqBody: any) {
@@ -11,9 +11,9 @@ export class UserValidation {
     }
   }
 
-  static getUserReq(reqParams: any) {
+  static validateId(id: any) {
     try {
-      return GetUserReqSchema.parse(reqParams);
+      return UserIdSchema.parse(id);
     } catch (err) {
       const errorMessage = getZodErrMessage(err);
       throw { statusCode: 422, errorMessage };
