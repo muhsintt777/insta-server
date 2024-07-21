@@ -7,17 +7,17 @@ export class AuthController {
   static async login(req: Request, res: Response) {
     try {
       const userCreds = AuthValidation.loginReq(req.body);
-      const accessToken = await AuthService.login(
-        userCreds.email,
-        userCreds.password
-      );
+      // const accessToken = await AuthService.login(
+      //   userCreds.email,
+      //   userCreds.password
+      // );
 
-      res.cookie("token", accessToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: TOKEN_COOKIE_AGE,
-      });
-      res.status(200).json({ message: "Login successfull" });
+      // res.cookie("token", accessToken, {
+      //   httpOnly: true,
+      //   secure: true,
+      //   maxAge: TOKEN_COOKIE_AGE,
+      // });
+      // res.status(200).json({ message: "Login successfull" });
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
@@ -32,8 +32,8 @@ export class AuthController {
     try {
       const { token } = AuthValidation.getUserReq(req.body);
 
-      const user = await AuthService.getUser(token.id);
-      res.status(200).json(user);
+      // const user = await AuthService.getUser(token.id);
+      // res.status(200).json(user);
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
