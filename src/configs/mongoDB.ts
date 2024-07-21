@@ -5,10 +5,7 @@ export const connectDB = async () => {
   try {
     if (!MONGO_URI) throw new Error("no db url found");
 
-    const connectionInstance = await connect(MONGO_URI, {
-      serverSelectionTimeoutMS: 1000 * 5,
-      socketTimeoutMS: 1000 * 45,
-    });
+    const connectionInstance = await connect(MONGO_URI);
     console.log(
       `mongoDB connected HOST: ${connectionInstance.connection.host}`
     );
