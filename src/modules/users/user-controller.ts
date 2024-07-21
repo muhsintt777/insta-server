@@ -4,7 +4,9 @@ import { UserValidation } from "./user-validation";
 
 export class UserController {
   static async getUser(req: Request, res: Response) {
-    console.log(req, res);
+    const { id } = UserValidation.getUserReq(req.body);
+    const result = await UserService.getUser(id);
+    res.status(200).json(result);
   }
 
   static async createUser(req: Request, res: Response) {
@@ -24,7 +26,6 @@ export class UserController {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
         res.status(err.statusCode).json({ message: err.errorMessage });
-        console.log(req.body);
       } else {
         res.status(400).json({ message: "Something went wrong" });
       }

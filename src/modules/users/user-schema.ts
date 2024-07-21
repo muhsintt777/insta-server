@@ -32,3 +32,12 @@ export const CreateUserReqSchema = z.object({
     .regex(REGEX.fullName, "Firstname is not valid"),
 });
 export type CreateUserReqType = z.infer<typeof CreateUserReqSchema>;
+
+export const GetUserReqSchema = z.object({
+  id: z
+    .string({
+      required_error: "Id required",
+      invalid_type_error: "Invalid type",
+    })
+    .trim(),
+});

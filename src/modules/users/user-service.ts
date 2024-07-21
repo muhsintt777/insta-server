@@ -1,22 +1,21 @@
-import { UserModal } from "./user-modal";
-import { User } from "./user";
+import { IUserWithoutSensitive } from "./user";
 import { UserModel } from "./user-model";
 
 export class UserService {
-  static async getUser(id: number): Promise<Omit<User, "password" | "email">> {
-    const userArr = await UserModal.findAll({
-      where: {
-        id: id,
-      },
-    });
-    if (!userArr.length)
-      throw { statusCode: 404, errorMessage: "User not found" };
+  static async getUser(id: string): Promise<IUserWithoutSensitive> {
+    try {
+      const result = await UserModel.findById(id, {
+        password: 0,
+        refreshToken: 0,
+      });
 
-    const user = userArr[0]?.toJSON();
-    delete user.password;
-    delete user.email;
-    const mutatedUser: Omit<User, "password" | "email"> = user;
-    return mutatedUser;
+      if (!result) throw new Error("no user");
+
+      return result;
+    } catch (err) {
+      console.log("getUsererr", err);
+      throw err;
+    }
   }
 
   static async createUser(

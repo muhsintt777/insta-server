@@ -22,18 +22,23 @@ const userSchema = new Schema(
     },
     bio: {
       type: SchemaTypes.String,
+      optional: true,
     },
     profileImage: {
       type: SchemaTypes.String,
+      optional: true,
     },
     gender: {
-      type: SchemaTypes.Decimal128,
+      type: SchemaTypes.Number,
+      optional: true,
     },
     mobileNo: {
       type: SchemaTypes.String,
+      optional: true,
     },
     refreshToken: {
       type: SchemaTypes.String,
+      optional: true,
     },
   },
   { timestamps: true }
