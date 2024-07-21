@@ -6,11 +6,11 @@ export type TUser = {
   username: string;
   password: string;
   fullName: string;
-  bio: string | null | undefined;
-  profileImage: string | null | undefined;
-  gender: number | null | undefined;
-  mobileNo: string | null | undefined;
-  refreshToken: string | null | undefined;
+  bio?: string | null | undefined;
+  profileImage?: string | null | undefined;
+  gender?: number | null | undefined;
+  mobileNo?: string | null | undefined;
+  refreshToken?: string | null | undefined;
   createdAt: number;
   updatedAt: number;
 };
