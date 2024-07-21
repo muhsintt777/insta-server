@@ -11,9 +11,9 @@ export class UserValidation {
     }
   }
 
-  static getUserReq(reqBody: any) {
+  static getUserReq(reqParams: any) {
     try {
-      return GetUserReqSchema.parse(reqBody);
+      return GetUserReqSchema.parse(reqParams);
     } catch (err) {
       const errorMessage = getZodErrMessage(err);
       throw { statusCode: 422, errorMessage };

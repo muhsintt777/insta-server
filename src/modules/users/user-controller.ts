@@ -4,7 +4,7 @@ import { UserValidation } from "./user-validation";
 
 export class UserController {
   static async getUser(req: Request, res: Response) {
-    const { id } = UserValidation.getUserReq(req.body);
+    const { id } = UserValidation.getUserReq(req.params);
     const result = await UserService.getUser(id);
     res.status(200).json(result);
   }
