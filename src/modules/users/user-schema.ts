@@ -2,21 +2,6 @@ import { z } from "zod";
 import { REGEX } from "configs/constants";
 
 export const CreateUserReqSchema = z.object({
-  firstName: z
-    .string({
-      required_error: "Firstname is required",
-      invalid_type_error: "Firstname must be string",
-    })
-    .trim()
-    .regex(REGEX.name, "Firstname is not valid"),
-  lastName: z
-    .string({
-      invalid_type_error: "Lastname must be string",
-    })
-    .trim()
-    .regex(REGEX.name, "Lastname is not valid")
-    .optional()
-    .nullable(),
   email: z
     .string({
       required_error: "Email is required",
@@ -24,6 +9,13 @@ export const CreateUserReqSchema = z.object({
     })
     .trim()
     .regex(REGEX.email, "Email is not valid"),
+  username: z
+    .string({
+      required_error: "Username is required",
+      invalid_type_error: "Username must be string",
+    })
+    .trim()
+    .regex(REGEX.username, "Invalid username"),
   password: z
     .string({
       required_error: "Password is required",
@@ -31,5 +23,12 @@ export const CreateUserReqSchema = z.object({
     })
     .trim()
     .regex(REGEX.password, "Password is not valid"),
+  fullName: z
+    .string({
+      required_error: "Firstname is required",
+      invalid_type_error: "Firstname must be string",
+    })
+    .trim()
+    .regex(REGEX.fullName, "Firstname is not valid"),
 });
 export type CreateUserReqType = z.infer<typeof CreateUserReqSchema>;

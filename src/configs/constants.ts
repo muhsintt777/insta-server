@@ -6,7 +6,8 @@ export const TABLES = {
 export const REGEX = {
   email: /^[\w\.-]+[\+\w\.-]*@[\w\.-]+\.\w+$/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/,
-  name: /^[A-Za-z]+$/,
+  fullName: /^[a-zA-Z]+(?: [a-zA-Z]+)*$/,
+  username: /^(?=.{3,20}$)[a-zA-Z0-9_]+$/,
 };
 
 export const TOKEN_COOKIE_AGE = 24 * 60 * 60 * 1000;

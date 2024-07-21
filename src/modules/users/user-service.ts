@@ -1,6 +1,6 @@
-import { Crypto } from "utils/crypto";
 import { UserModal } from "./user-modal";
 import { User } from "./user";
+import { UserModel } from "./user-model";
 
 export class UserService {
   static async getUser(id: number): Promise<Omit<User, "password" | "email">> {
@@ -20,34 +20,25 @@ export class UserService {
   }
 
   static async createUser(
-    firstName: string,
-    lastName: string | null | undefined,
     email: string,
-    password: string
-  ): Promise<Omit<User, "password">> {
+    username: string,
+    password: string,
+    fullName: string,
+    profileImage: string | null
+  ): Promise<string> {
     try {
-      const hashedPwd = await Crypto.hashString(password, 10);
-      const userObj = await UserModal.create({
-        firstName,
-        lastName,
+      const result = await UserModel.create({
         email,
-        password: hashedPwd,
+        username,
+        password,
+        fullName,
+        profileImage,
       });
-      const user = userObj.toJSON();
-      delete user.password;
-      delete user.email;
-      const userWithoutPassword: Omit<User, "password"> = user;
 
-      return userWithoutPassword;
+      return result._id.toString();
     } catch (err) {
-      if (err.name === "SequelizeUniqueConstraintError") {
-        throw {
-          statusCode: 409,
-          errorMessage: "User with same email already exist.",
-        };
-      } else {
-        throw err;
-      }
+      console.log("createuser", err);
+      throw err;
     }
   }
 }

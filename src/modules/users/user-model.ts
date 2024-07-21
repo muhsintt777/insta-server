@@ -5,16 +5,18 @@ const userSchema = new Schema(
     email: {
       type: SchemaTypes.String,
       required: true,
+      unique: true,
     },
     username: {
       type: SchemaTypes.String,
       required: true,
+      unique: true,
     },
     password: {
       type: SchemaTypes.String,
       required: true,
     },
-    name: {
+    fullName: {
       type: SchemaTypes.String,
       required: true,
     },
@@ -32,7 +34,6 @@ const userSchema = new Schema(
     },
     refreshToken: {
       type: SchemaTypes.String,
-      required: true,
     },
   },
   { timestamps: true }

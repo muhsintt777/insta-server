@@ -9,20 +9,22 @@ export class UserController {
 
   static async createUser(req: Request, res: Response) {
     try {
-      const { firstName, lastName, email, password } =
+      const { email, username, password, fullName } =
         UserValidation.createUserReq(req.body);
 
-      const user = await UserService.createUser(
-        firstName,
-        lastName,
+      const userID = await UserService.createUser(
         email,
-        password
+        username,
+        password,
+        fullName,
+        null
       );
-      res.status(201).json(user);
+      res.status(201).json(userID);
     } catch (err) {
       console.log(err);
       if (err.statusCode && err.errorMessage) {
         res.status(err.statusCode).json({ message: err.errorMessage });
+        console.log(req.body);
       } else {
         res.status(400).json({ message: "Something went wrong" });
       }
