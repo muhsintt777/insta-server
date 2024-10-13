@@ -4,7 +4,6 @@ const refreshTokenKey = process.env.REFRESH_TOKEN_KEY as string;
 
 interface PayloadType {
   id: number;
-  email: string;
 }
 
 export class Token {
