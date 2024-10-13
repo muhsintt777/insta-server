@@ -1,4 +1,7 @@
 import { model, Schema, SchemaTypes } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+import { Crypto } from "utils/crypto";
+import { Token } from "utils/token";
 
 const userSchema = new Schema(
   {
@@ -43,5 +46,26 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
+userSchema.plugin(mongooseAggregatePaginate);
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  this.password = await Crypto.hashString(this.password);
+  next();
+});
+
+userSchema.methods.isPasswordCorrect = async function (password: string) {
+  return Crypto.compare(password, this.password);
+};
+
+userSchema.methods.generateAccessToken = async function () {
+  return Token.createAccessToken({ id: this._id });
+};
+
+userSchema.methods.generateRefreshToken = async function () {
+  return Token.createRefreshToken({ id: this._id });
+};
 
 export const UserModel = model("User", userSchema);
