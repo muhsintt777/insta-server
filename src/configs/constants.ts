@@ -5,7 +5,9 @@ export const REGEX = {
   username: /^(?=.{3,20}$)[a-zA-Z0-9_]+$/,
 } as const;
 
-export const TOKEN_COOKIE_AGE = 24 * 60 * 60 * 1000;
+export const COOKIE_EXPIRY_IN_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+export const ACCESS_TOKEN_EXPIRY_IN_MINUTES = 30;
+export const REFRESH_TOKEN_EXPIRY_IN_MINUTES = 60 * 24 * 1; // 1 day
 
 export const FILE_TYPE = {
   imagePNG: "image/png",

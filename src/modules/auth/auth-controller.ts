@@ -1,44 +1,52 @@
 import { Request, Response } from "express";
-// import { TOKEN_COOKIE_AGE } from "configs/constants";
-// import { AuthService } from "./auth-service";
-// import { AuthValidation } from "./auth-validation";
+import { COOKIE_EXPIRY_IN_MS, HTTP_STATUS_CODES } from "configs/constants";
+import { ApiResponse } from "utils/api-response";
+import { ApiError } from "utils/api-error";
+import { LoginReqSchema } from "./auth-schema";
+import { AuthService } from "./auth-service";
 
 export class AuthController {
-  static async login(_req: Request, res: Response) {
-    try {
-      // const userCreds = AuthValidation.loginReq(req.body);
-      // const accessToken = await AuthService.login(
-      //   userCreds.email,
-      //   userCreds.password
-      // );
-      // res.cookie("token", accessToken, {
-      //   httpOnly: true,
-      //   secure: true,
-      //   maxAge: TOKEN_COOKIE_AGE,
-      // });
-      // res.status(200).json({ message: "Login successfull" });
-    } catch (err) {
-      console.log(err);
-      if (err.statusCode && err.errorMessage) {
-        res.status(err.statusCode).json({ message: err.errorMessage });
-      } else {
-        res.status(400).json({ message: "Something went wrong" });
-      }
-    }
-  }
+  static async login(req: Request, res: Response) {
+    const loginDetails = LoginReqSchema.parse(req.body);
 
-  static async getUser(_req: Request, res: Response) {
-    try {
-      // const { token } = AuthValidation.getUserReq(req.body);
-      // const user = await AuthService.getUser(token.id);
-      // res.status(200).json(user);
-    } catch (err) {
-      console.log(err);
-      if (err.statusCode && err.errorMessage) {
-        res.status(err.statusCode).json({ message: err.errorMessage });
-      } else {
-        res.status(400).json({ message: "Something went wrong" });
-      }
+    let tokens: {
+      accessToken: string;
+      refreshToken: string;
+    } | null = null;
+
+    if (loginDetails.email) {
+      tokens = await AuthService.login({
+        type: "EMAIL",
+        email: loginDetails.email,
+        password: loginDetails.password,
+      });
+    } else if (loginDetails.username) {
+      tokens = await AuthService.login({
+        type: "USERNAME",
+        username: loginDetails.username,
+        password: loginDetails.password,
+      });
+    } else {
+      throw new ApiError(
+        HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY,
+        "Email or Username is required",
+        "VALIDATION_REQUIRED_FIELD_MISSING"
+      );
     }
+
+    console.log("hitt");
+
+    res
+      .status(HTTP_STATUS_CODES.OK)
+      .cookie("refreshToken", tokens.refreshToken, {
+        secure: true,
+        maxAge: COOKIE_EXPIRY_IN_MS,
+      })
+      .cookie("accessToken", tokens.accessToken, {
+        secure: true,
+        maxAge: COOKIE_EXPIRY_IN_MS,
+      })
+      .json(new ApiResponse(tokens, HTTP_STATUS_CODES.OK, "Login success"));
+    return;
   }
 }
