@@ -34,8 +34,6 @@ export class AuthController {
       );
     }
 
-    console.log("hitt");
-
     res
       .status(HTTP_STATUS_CODES.OK)
       .cookie("refreshToken", tokens.refreshToken, {

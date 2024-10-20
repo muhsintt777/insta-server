@@ -59,11 +59,8 @@ export class AuthService {
       );
     }
 
-    console.log("hit1");
-
     const accessToken = Token.createAccessToken(user.id);
     const refreshToken = Token.createRefreshToken(user.id);
-    console.log("hit2");
 
     await UserModel.findByIdAndUpdate(user.id, { refreshToken: refreshToken });
     return { accessToken, refreshToken };
