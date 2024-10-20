@@ -1,21 +1,21 @@
+import { ApiError } from "utils/api-error";
 import { IUserWithoutSensitive } from "./user";
 import { UserModel } from "./user-model";
+import { HTTP_STATUS_CODES } from "configs/constants";
 
 export class UserService {
   static async getUser(id: string): Promise<IUserWithoutSensitive> {
-    try {
-      const result = await UserModel.findById(id, {
-        password: 0,
-        refreshToken: 0,
-      });
-
-      if (!result) throw new Error("no user");
-
-      return result;
-    } catch (err) {
-      console.log("getUsererr", err);
-      throw err;
-    }
+    const result = await UserModel.findById(id, {
+      password: 0,
+      refreshToken: 0,
+    });
+    if (!result)
+      throw new ApiError(
+        HTTP_STATUS_CODES.NOT_FOUND,
+        "User not found",
+        "RESOURCE_NOT_FOUND"
+      );
+    return result;
   }
 
   static async createUser(
@@ -25,30 +25,19 @@ export class UserService {
     fullName: string,
     profileImage: string | null
   ): Promise<string> {
-    try {
-      const result = await UserModel.create({
-        email,
-        username,
-        password,
-        fullName,
-        profileImage,
-      });
+    const result = await UserModel.create({
+      email,
+      username,
+      password,
+      fullName,
+      profileImage,
+    });
 
-      return result._id.toString();
-    } catch (err) {
-      console.log("createuser", err);
-      throw err;
-    }
+    return result._id.toString();
   }
 
   static async deleteUser(id: string): Promise<string> {
-    try {
-      const result = await UserModel.findByIdAndDelete(id);
-      if (!result) throw new Error("no user found");
-      return result.id;
-    } catch (error) {
-      console.log("deleteUser error", error);
-      throw error;
-    }
+    const result = await UserModel.findByIdAndDelete(id);
+    return result.id;
   }
 }
