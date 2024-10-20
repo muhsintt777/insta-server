@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { ApiError } from "./api-error";
 import { HTTP_STATUS_CODES } from "configs/constants";
 import { Error as MongoError, MongooseError } from "mongoose";
+import { ZodError } from "zod";
+import { getZodErrMessage } from "./common";
 
 type RequestHandler = (
   req: Request,
@@ -21,6 +23,18 @@ export const errorHandler = (requestHandler: RequestHandler) => {
         res
           .status(err.statusCode)
           .json(new ApiError(err.statusCode, err.errorMessage, err.errorType));
+      } else if (err instanceof ZodError) {
+        // handle zod error
+        const message = getZodErrMessage(err);
+        res
+          .status(HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY)
+          .json(
+            new ApiError(
+              HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY,
+              message,
+              "VALIDATION_FAILED"
+            )
+          );
       } else if (err instanceof MongooseError) {
         // handle mongoose error
         res
