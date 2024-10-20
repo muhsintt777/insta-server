@@ -1,23 +1,17 @@
 import jwt from "jsonwebtoken";
 const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY as string;
 const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY as string;
-const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY as string;
-const ACCESS_TOKEN_EXPIRY = process.env.ACCESS_TOKEN_EXPIRY as string;
-
-interface PayloadType {
-  id: number;
-}
 
 export class Token {
-  static createAccessToken(payload: PayloadType) {
-    return jwt.sign(payload, ACCESS_TOKEN_KEY, {
-      expiresIn: ACCESS_TOKEN_EXPIRY,
+  static createAccessToken(userID: string) {
+    return jwt.sign({ id: userID }, ACCESS_TOKEN_KEY, {
+      expiresIn: "1h",
     });
   }
 
-  static createRefreshToken(payload: PayloadType) {
-    return jwt.sign(payload, REFRESH_TOKEN_KEY, {
-      expiresIn: REFRESH_TOKEN_EXPIRY,
+  static createRefreshToken(userID: string) {
+    return jwt.sign({ id: userID }, REFRESH_TOKEN_KEY, {
+      expiresIn: "1d",
     });
   }
 
