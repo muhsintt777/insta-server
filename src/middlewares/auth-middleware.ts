@@ -1,28 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-
-const accessTokenKey = process.env.ACCESS_TOKEN_KEY as string;
+import { HTTP_STATUS_CODES } from "configs/constants";
+import { ApiError } from "utils/api-error";
+import { Token } from "utils/token";
 
 export class AuthMiddleware {
-  static verifyToken(req: Request, res: Response, next: NextFunction) {
-    try {
-      const token = req.cookies.token;
-      if (!token) {
-        throw { statusCode: 401, errorMessage: "Auth token required" };
-      }
-
-      const decoded = jwt.verify(token, accessTokenKey);
-      req.body.token = decoded;
-
-      next();
-    } catch (err) {
-      if (err.statusCode && err.errorMessage) {
-        res.status(err.statusCode).json({ message: err.errorMessage });
-      } else if (err.message) {
-        res.status(401).json({ message: err.message });
-      } else {
-        res.status(401).json({ message: "Authentication failed" });
-      }
+  static async verifyToken(req: Request, _res: Response, next: NextFunction) {
+    let token = req.cookies.accessToken;
+    if (!token) token = req.headers.authorization;
+    if (!token) token = req.body.token;
+    if (!token) {
+      throw new ApiError(
+        HTTP_STATUS_CODES.BAD_REQUEST,
+        "Token is required",
+        "AUTH_TOKEN_MISSING"
+      );
     }
+
+    const decoded = Token.verifyAccessToken(token);
+    req.body.token = decoded;
+    next();
   }
 }
