@@ -8,3 +8,7 @@ STORAGE_BUCKET_SEC_KEY=s3 secret key
 STORAGE_BUCKET_REGION=bucket region
 
 MONGO_URI= mongodb connection string
+
+CLOUDINARY_NAME=muhsin-cloud-dev
+CLOUDINARY_NAME_API_KEY=numberrr
+CLOUDINARY_NAME_API_SECRET=secret key
