@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { UserService } from "./user-service";
 import { HTTP_STATUS_CODES } from "configs/constants";
 import { ApiResponse } from "utils/api-response";
+import { uploadToCloud } from "utils/cloud";
+import { UserService } from "./user-service";
 import { CreateUserReqSchema, UserIdSchema } from "./user-schema";
 
 export class UserController {
@@ -18,12 +19,23 @@ export class UserController {
     const { email, username, password, fullName } = CreateUserReqSchema.parse(
       req.body
     );
+
+    // handle file upload o cloud
+    const profileImageLocalPath =
+      (req.files as { [fieldname: string]: Express.Multer.File[] })?.[
+        "profileImage"
+      ]?.[0]?.path || null;
+    let profileImageUrl: string | null = null;
+    if (profileImageLocalPath) {
+      profileImageUrl = (await uploadToCloud(profileImageLocalPath)).url;
+    }
+
     const userID = await UserService.createUser(
       email,
       username,
       password,
       fullName,
-      null
+      profileImageUrl
     );
 
     res
