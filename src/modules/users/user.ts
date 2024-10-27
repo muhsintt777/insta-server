@@ -15,7 +15,7 @@ export type User = {
   updatedAt: number;
 };
 
-export interface IUserWithoutSensitive
+export interface UserWithoutSensitive
   extends Document<
     unknown,
     {},

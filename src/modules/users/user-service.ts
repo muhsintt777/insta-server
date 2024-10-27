@@ -1,10 +1,10 @@
 import { ApiError } from "utils/api-error";
-import { IUserWithoutSensitive } from "./user";
+import { UserWithoutSensitive } from "./user";
 import { UserModel } from "./user-model";
 import { HTTP_STATUS_CODES } from "configs/constants";
 
 export class UserService {
-  static async getUser(id: string): Promise<IUserWithoutSensitive> {
+  static async getUser(id: string): Promise<UserWithoutSensitive> {
     const result = await UserModel.findById(id, {
       password: 0,
       refreshToken: 0,
