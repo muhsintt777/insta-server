@@ -1,5 +1,5 @@
 import { HTTP_STATUS_CODES } from "configs/constants";
-import { TUser } from "modules/users/user";
+import { User } from "modules/users/user";
 import { UserModel } from "modules/users/user-model";
 import { ApiError } from "utils/api-error";
 import { Crypto } from "utils/crypto";
@@ -22,7 +22,7 @@ type LoginParams = EmailLogin | UsernameLogin;
 export class AuthService {
   static async login(loginDetails: LoginParams) {
     const { type } = loginDetails;
-    let user: TUser | null = null;
+    let user: User | null = null;
 
     switch (type) {
       case "EMAIL":

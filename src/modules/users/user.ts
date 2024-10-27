@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export type TUser = {
+export type User = {
   id: string;
   email: string;
   username: string;
