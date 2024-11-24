@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./dist/server.js",
     "build": "tsc && tsc-alias",
-    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/server.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/server.ts",
+    "format": "prettier --write './src/**/*.{ts,js,json,md}'"
   },
   "dependencies": {
     "aws-sdk": "^2.1473.0",
@@ -33,6 +34,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.12",
     "@types/node": "^20.4.8",
+    "prettier": "3.3.3",
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.7",
     "tsconfig-paths": "^4.2.0",
