@@ -55,16 +55,4 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// userSchema.methods.isPasswordCorrect = async function (password: string) {
-//   return Crypto.compare(password, this.password);
-// };
-
-// userSchema.methods.generateAccessToken = async function () {
-//   return Token.createAccessToken({ id: this._id });
-// };
-
-// userSchema.methods.generateRefreshToken = async function () {
-//   return Token.createRefreshToken({ id: this._id });
-// };
-
 export const UserModel = model('User', userSchema);
