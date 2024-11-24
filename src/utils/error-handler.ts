@@ -1,14 +1,14 @@
-import { NextFunction, Request, Response } from "express";
-import { ApiError } from "./api-error";
-import { HTTP_STATUS_CODES } from "configs/constants";
-import { Error as MongoError, MongooseError } from "mongoose";
-import { ZodError } from "zod";
-import { getZodErrMessage } from "./common";
+import { NextFunction, Request, Response } from 'express';
+import { ApiError } from './api-error';
+import { HTTP_STATUS_CODES } from 'configs/constants';
+import { Error as MongoError, MongooseError } from 'mongoose';
+import { ZodError } from 'zod';
+import { getZodErrMessage } from './common';
 
 type RequestHandler = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => Promise<void>;
 
 export const errorHandler = (requestHandler: RequestHandler) => {
@@ -32,8 +32,8 @@ export const errorHandler = (requestHandler: RequestHandler) => {
             new ApiError(
               HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY,
               message,
-              "VALIDATION_FAILED"
-            )
+              'VALIDATION_FAILED',
+            ),
           );
       } else if (err instanceof MongooseError) {
         // handle mongoose error
@@ -43,8 +43,8 @@ export const errorHandler = (requestHandler: RequestHandler) => {
             new ApiError(
               HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
               `${err.name}: ${err.message}`,
-              "DB_ERROR"
-            )
+              'DB_ERROR',
+            ),
           );
       } else if (err instanceof MongoError) {
         // handle mongo error
@@ -54,8 +54,8 @@ export const errorHandler = (requestHandler: RequestHandler) => {
             new ApiError(
               HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
               `${err.name}: ${err.message}`,
-              "DB_ERROR"
-            )
+              'DB_ERROR',
+            ),
           );
       } else if (err instanceof Error) {
         // handle node error
@@ -65,20 +65,20 @@ export const errorHandler = (requestHandler: RequestHandler) => {
             new ApiError(
               HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
               `${err.name}: ${err.message}`,
-              "NODE_ERROR"
-            )
+              'NODE_ERROR',
+            ),
           );
       } else {
         // handle unknown error
-        console.log("unknow err: ", err);
+        console.log('unknow err: ', err);
         res
           .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
           .json(
             new ApiError(
               HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-              "Something went wrong, please try again later.",
-              "INTERNAL_SERVER_ERROR"
-            )
+              'Something went wrong, please try again later.',
+              'INTERNAL_SERVER_ERROR',
+            ),
           );
       }
     }

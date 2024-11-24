@@ -12,27 +12,27 @@ export interface Post {
 export interface AddPostParams {}
 
 interface ColStatus {
-  name: "status";
+  name: 'status';
   value: 1 | 2;
 }
 
 interface ColImageUrl {
-  name: "image_url";
+  name: 'image_url';
   value: string;
 }
 
 interface ColCaption {
-  name: "caption";
+  name: 'caption';
   value: string;
 }
 
 interface ColLikeCount {
-  name: "like_count";
+  name: 'like_count';
   value: number;
 }
 
 interface ColCommentCount {
-  name: "comment_count";
+  name: 'comment_count';
   value: number;
 }
 

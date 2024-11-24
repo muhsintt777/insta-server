@@ -1,4 +1,4 @@
-import { compare, hash } from "bcrypt";
+import { compare, hash } from 'bcrypt';
 
 export class Crypto {
   static async hashString(payload: string, salt?: number): Promise<string> {

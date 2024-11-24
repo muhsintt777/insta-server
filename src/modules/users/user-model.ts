@@ -1,6 +1,6 @@
-import { model, Schema, SchemaTypes } from "mongoose";
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
-import { Crypto } from "utils/crypto";
+import { model, Schema, SchemaTypes } from 'mongoose';
+import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
+import { Crypto } from 'utils/crypto';
 
 const userSchema = new Schema(
   {
@@ -43,13 +43,13 @@ const userSchema = new Schema(
       optional: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.plugin(mongooseAggregatePaginate);
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
 
   this.password = await Crypto.hashString(this.password);
   next();
@@ -67,4 +67,4 @@ userSchema.pre("save", async function (next) {
 //   return Token.createRefreshToken({ id: this._id });
 // };
 
-export const UserModel = model("User", userSchema);
+export const UserModel = model('User', userSchema);

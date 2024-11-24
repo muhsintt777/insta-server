@@ -1,7 +1,7 @@
-import { ApiError } from "utils/api-error";
-import { UserWithoutSensitive } from "./user";
-import { UserModel } from "./user-model";
-import { HTTP_STATUS_CODES } from "configs/constants";
+import { ApiError } from 'utils/api-error';
+import { UserWithoutSensitive } from './user';
+import { UserModel } from './user-model';
+import { HTTP_STATUS_CODES } from 'configs/constants';
 
 export class UserService {
   static async getUser(id: string): Promise<UserWithoutSensitive> {
@@ -12,8 +12,8 @@ export class UserService {
     if (!result)
       throw new ApiError(
         HTTP_STATUS_CODES.NOT_FOUND,
-        "User not found",
-        "RESOURCE_NOT_FOUND"
+        'User not found',
+        'RESOURCE_NOT_FOUND',
       );
     return result;
   }
@@ -23,7 +23,7 @@ export class UserService {
     username: string,
     password: string,
     fullName: string,
-    profileImage: string | null
+    profileImage: string | null,
   ): Promise<string> {
     const result = await UserModel.create({
       email,

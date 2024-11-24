@@ -1,15 +1,15 @@
-import { model, Schema, SchemaTypes } from "mongoose";
+import { model, Schema, SchemaTypes } from 'mongoose';
 
 const friendRequestSchema = new Schema(
   {
     senderId: {
       type: SchemaTypes.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     receiverId: {
       type: SchemaTypes.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     status: {
@@ -17,7 +17,7 @@ const friendRequestSchema = new Schema(
       default: 1,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const FriendRequestModel = model("Friend_Request", friendRequestSchema);
+export const FriendRequestModel = model('Friend_Request', friendRequestSchema);

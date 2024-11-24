@@ -1,4 +1,4 @@
-import { model, Schema, SchemaTypes } from "mongoose";
+import { model, Schema, SchemaTypes } from 'mongoose';
 
 const postSchema = new Schema(
   {
@@ -11,7 +11,7 @@ const postSchema = new Schema(
     },
     creator: {
       type: SchemaTypes.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     likeCount: {
@@ -23,7 +23,7 @@ const postSchema = new Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const PostModel = model("Post", postSchema);
+export const PostModel = model('Post', postSchema);

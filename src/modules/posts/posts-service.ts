@@ -1,6 +1,6 @@
-import { Db } from "configs/db";
-import { TABLES } from "configs/constants";
-import { Post, PostsColumn } from "./posts";
+import { Db } from 'configs/db';
+import { TABLES } from 'configs/constants';
+import { Post, PostsColumn } from './posts';
 
 // interface ColStatus {
 //   name: "status";
@@ -9,13 +9,13 @@ import { Post, PostsColumn } from "./posts";
 
 export class PostsService {
   static async getPost(id: number) {
-    console.log(id, "id");
+    console.log(id, 'id');
   }
 
   static async getAllPost(): Promise<Post[]> {
-    const sql = "SELECT * FROM posts";
+    const sql = 'SELECT * FROM posts';
     const result = await Db.select(sql, {});
-    if (!result) throw { statusCode: 500, errorMessage: "DB selection failed" };
+    if (!result) throw { statusCode: 500, errorMessage: 'DB selection failed' };
 
     const posts: Post[] = [];
     result.forEach((item) => {
@@ -37,13 +37,13 @@ export class PostsService {
   static async addPost(
     caption: string,
     imageUrl: string | null,
-    status: 1 | 2
+    status: 1 | 2,
   ): Promise<number> {
     const sql = `INSERT INTO ${TABLES.POSTS} (caption, imageUrl, status) VALUES ($value1, $value2, $value3) RETURNING id`;
     const replacements = { value1: caption, value2: imageUrl, value3: status };
 
     const result = await Db.insert(sql, replacements);
-    if (!result) throw { statusCode: 500, errorMessage: "DB insert failed" };
+    if (!result) throw { statusCode: 500, errorMessage: 'DB insert failed' };
     const id = result[0][0].id as number;
 
     return id;
@@ -60,7 +60,7 @@ export class PostsService {
     WHERE id = ${id};`;
 
     const result = await Db.update(sql, {});
-    console.log(result, "resultss update");
+    console.log(result, 'resultss update');
   }
 
   static async deletePost(id: number): Promise<number> {
@@ -69,7 +69,7 @@ export class PostsService {
 
     const result = await Db.delete(sql, replacements);
     if (!result || !result[0] || !result[0].id)
-      throw { statusCode: 404, errorMessage: "Unable to find post" };
+      throw { statusCode: 404, errorMessage: 'Unable to find post' };
     const deletedId = result[0].id as number;
 
     return deletedId;

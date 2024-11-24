@@ -1,18 +1,18 @@
-import { HTTP_STATUS_CODES } from "configs/constants";
-import { User } from "modules/users/user";
-import { UserModel } from "modules/users/user-model";
-import { ApiError } from "utils/api-error";
-import { Crypto } from "utils/crypto";
-import { Token } from "utils/token";
+import { HTTP_STATUS_CODES } from 'configs/constants';
+import { User } from 'modules/users/user';
+import { UserModel } from 'modules/users/user-model';
+import { ApiError } from 'utils/api-error';
+import { Crypto } from 'utils/crypto';
+import { Token } from 'utils/token';
 
 interface EmailLogin {
-  type: "EMAIL";
+  type: 'EMAIL';
   email: string;
   password: string;
 }
 
 interface UsernameLogin {
-  type: "USERNAME";
+  type: 'USERNAME';
   username: string;
   password: string;
 }
@@ -25,13 +25,13 @@ export class AuthService {
     let user: User | null = null;
 
     switch (type) {
-      case "EMAIL":
+      case 'EMAIL':
         user = await UserModel.findOne({
           email: loginDetails.email,
         });
         break;
 
-      case "USERNAME":
+      case 'USERNAME':
         user = await UserModel.findOne({
           username: loginDetails.username,
         });
@@ -41,21 +41,21 @@ export class AuthService {
     if (!user) {
       throw new ApiError(
         HTTP_STATUS_CODES.NOT_FOUND,
-        "User not found",
-        "RESOURCE_NOT_FOUND"
+        'User not found',
+        'RESOURCE_NOT_FOUND',
       );
     }
 
     const isPasswordValid = Crypto.compare(
       user.password,
-      loginDetails.password
+      loginDetails.password,
     );
 
     if (!isPasswordValid) {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
-        "Invalid credentials",
-        "AUTH_INVALID_CREDENTIALS"
+        'Invalid credentials',
+        'AUTH_INVALID_CREDENTIALS',
       );
     }
 

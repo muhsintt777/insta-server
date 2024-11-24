@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { HTTP_STATUS_CODES } from "configs/constants";
-import { ApiResponse } from "utils/api-response";
-import { uploadToCloud } from "utils/cloud";
-import { UserService } from "./user-service";
-import { CreateUserReqSchema, UserIdSchema } from "./user-schema";
+import { Request, Response } from 'express';
+import { HTTP_STATUS_CODES } from 'configs/constants';
+import { ApiResponse } from 'utils/api-response';
+import { uploadToCloud } from 'utils/cloud';
+import { UserService } from './user-service';
+import { CreateUserReqSchema, UserIdSchema } from './user-schema';
 
 export class UserController {
   static async getUser(req: Request, res: Response) {
@@ -17,13 +17,13 @@ export class UserController {
 
   static async createUser(req: Request, res: Response) {
     const { email, username, password, fullName } = CreateUserReqSchema.parse(
-      req.body
+      req.body,
     );
 
     // handle file upload o cloud
     const profileImageLocalPath =
       (req.files as { [fieldname: string]: Express.Multer.File[] })?.[
-        "profileImage"
+        'profileImage'
       ]?.[0]?.path || null;
     let profileImageUrl: string | null = null;
     if (profileImageLocalPath) {
@@ -35,7 +35,7 @@ export class UserController {
       username,
       password,
       fullName,
-      profileImageUrl
+      profileImageUrl,
     );
 
     res
@@ -44,8 +44,8 @@ export class UserController {
         new ApiResponse(
           { id: userID },
           HTTP_STATUS_CODES.CREATED,
-          "User created"
-        )
+          'User created',
+        ),
       );
   }
 
@@ -56,7 +56,7 @@ export class UserController {
     res
       .status(HTTP_STATUS_CODES.OK)
       .json(
-        new ApiResponse({ id: userID }, HTTP_STATUS_CODES.OK, "User deleted")
+        new ApiResponse({ id: userID }, HTTP_STATUS_CODES.OK, 'User deleted'),
       );
   }
 }

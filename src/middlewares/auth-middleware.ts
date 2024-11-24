@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { HTTP_STATUS_CODES } from "configs/constants";
-import { ApiError } from "utils/api-error";
-import { Token } from "utils/token";
+import { NextFunction, Request, Response } from 'express';
+import { HTTP_STATUS_CODES } from 'configs/constants';
+import { ApiError } from 'utils/api-error';
+import { Token } from 'utils/token';
 
 export class AuthMiddleware {
   static async verifyToken(req: Request, _res: Response, next: NextFunction) {
@@ -11,8 +11,8 @@ export class AuthMiddleware {
     if (!token) {
       throw new ApiError(
         HTTP_STATUS_CODES.BAD_REQUEST,
-        "Token is required",
-        "AUTH_TOKEN_MISSING"
+        'Token is required',
+        'AUTH_TOKEN_MISSING',
       );
     }
 

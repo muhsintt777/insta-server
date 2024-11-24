@@ -1,7 +1,7 @@
-import { ZodError } from "zod";
+import { ZodError } from 'zod';
 
 export const getZodErrMessage = (payload: ZodError): string => {
   return (
-    payload.issues.map((err) => err.message).join(", ") || "Validation failed"
+    payload.issues.map((err) => err.message).join(', ') || 'Validation failed'
   );
 };

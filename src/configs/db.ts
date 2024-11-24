@@ -1,10 +1,10 @@
-import { Sequelize, QueryTypes } from "sequelize";
+import { Sequelize, QueryTypes } from 'sequelize';
 // const dbUrl = process.env.DB_CONNECTION_URI || "";
 const port = Number(process.env.DB_PORT);
 
-export const dbConnection = new Sequelize("insta", "postgres", "postgres", {
-  dialect: "postgres",
-  host: "localhost",
+export const dbConnection = new Sequelize('insta', 'postgres', 'postgres', {
+  dialect: 'postgres',
+  host: 'localhost',
   port: port,
 });
 

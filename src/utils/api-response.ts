@@ -4,7 +4,7 @@ export class ApiResponse {
   success: boolean;
   data: any;
 
-  constructor(data: any, statusCode: number, message: string = "successfull") {
+  constructor(data: any, statusCode: number, message: string = 'successfull') {
     this.statusCode = statusCode;
     this.message = message;
     this.data = data;

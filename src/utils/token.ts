@@ -1,19 +1,19 @@
-import jwt from "jsonwebtoken";
-import { ApiError } from "./api-error";
-import { HTTP_STATUS_CODES } from "configs/constants";
+import jwt from 'jsonwebtoken';
+import { ApiError } from './api-error';
+import { HTTP_STATUS_CODES } from 'configs/constants';
 const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY as string;
 const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY as string;
 
 export class Token {
   static createAccessToken(userID: string) {
     return jwt.sign({ id: userID }, ACCESS_TOKEN_KEY, {
-      expiresIn: "1h",
+      expiresIn: '1h',
     });
   }
 
   static createRefreshToken(userID: string) {
     return jwt.sign({ id: userID }, REFRESH_TOKEN_KEY, {
-      expiresIn: "1d",
+      expiresIn: '1d',
     });
   }
 
@@ -23,8 +23,8 @@ export class Token {
     } catch (error) {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
-        "Token expired",
-        "AUTH_TOKEN_EXPIRED"
+        'Token expired',
+        'AUTH_TOKEN_EXPIRED',
       );
     }
   }
@@ -35,8 +35,8 @@ export class Token {
     } catch (error) {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
-        "Token expired",
-        "AUTH_TOKEN_EXPIRED"
+        'Token expired',
+        'AUTH_TOKEN_EXPIRED',
       );
     }
   }

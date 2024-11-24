@@ -1,4 +1,4 @@
-import { ERROR_TYPE } from "configs/constants";
+import { ERROR_TYPE } from 'configs/constants';
 
 // type ErrorType = typeof ERROR_TYPE;
 type ErrorType = (typeof ERROR_TYPE)[keyof typeof ERROR_TYPE];

@@ -1,7 +1,7 @@
-import fs from "fs";
-import { v2 as cloudinary } from "cloudinary";
-import { HTTP_STATUS_CODES } from "configs/constants";
-import { ApiError } from "./api-error";
+import fs from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
+import { HTTP_STATUS_CODES } from 'configs/constants';
+import { ApiError } from './api-error';
 
 const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME as string;
 const CLOUDINARY_NAME_API_KEY = process.env.CLOUDINARY_NAME_API_KEY as string;
@@ -17,7 +17,7 @@ cloudinary.config({
 export async function uploadToCloud(filePath: string) {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
-      resource_type: "auto",
+      resource_type: 'auto',
     });
     fs.unlinkSync(filePath);
     return result;
@@ -25,8 +25,8 @@ export async function uploadToCloud(filePath: string) {
     fs.unlinkSync(filePath);
     throw new ApiError(
       HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-      "File upload failed",
-      "INTERNAL_SERVER_ERROR"
+      'File upload failed',
+      'INTERNAL_SERVER_ERROR',
     );
   }
 }
