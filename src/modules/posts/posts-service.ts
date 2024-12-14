@@ -1,5 +1,5 @@
 import { Db } from 'configs/db';
-import { TABLES } from 'configs/constants';
+// import { TABLES } from 'configs/constants';
 import { Post, PostsColumn } from './posts';
 
 // interface ColStatus {
@@ -39,7 +39,7 @@ export class PostsService {
     imageUrl: string | null,
     status: 1 | 2,
   ): Promise<number> {
-    const sql = `INSERT INTO ${TABLES.POSTS} (caption, imageUrl, status) VALUES ($value1, $value2, $value3) RETURNING id`;
+    const sql = `INSERT INTO ${'post'} (caption, imageUrl, status) VALUES ($value1, $value2, $value3) RETURNING id`;
     const replacements = { value1: caption, value2: imageUrl, value3: status };
 
     const result = await Db.insert(sql, replacements);
@@ -55,7 +55,7 @@ export class PostsService {
       setStrings.push(`${item.name} = ${item.value}`);
     });
 
-    const sql = `UPDATE ${TABLES.POSTS}
+    const sql = `UPDATE ${'post'}
     SET ${setStrings.join}
     WHERE id = ${id};`;
 
@@ -64,7 +64,7 @@ export class PostsService {
   }
 
   static async deletePost(id: number): Promise<number> {
-    const sql = `DELETE FROM ${TABLES.POSTS} WHERE id = $id RETURNING id;`;
+    const sql = `DELETE FROM ${'post'} WHERE id = $id RETURNING id;`;
     const replacements = { id };
 
     const result = await Db.delete(sql, replacements);
