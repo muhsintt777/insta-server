@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { FILE_TYPE } from 'configs/constants';
-import { storageBucket } from 'configs/storage-bucket';
+// import { storageBucket } from 'configs/storage-bucket';
 import { PostsService } from './posts-service';
 import crypto from 'crypto';
 import { PostsColumn } from './posts';
@@ -47,18 +47,19 @@ export class PostsController {
       ) {
         const fileName = crypto.randomBytes(16).toString('hex');
 
-        const signedUrl = storageBucket.getSignedUrl('putObject', {
-          Bucket: bucketName,
-          Key: `posts-${fileName}`,
-          // ACL: "public-read",
-          ContentType: fileType,
-        });
+        // const signedUrl = storageBucket.getSignedUrl('putObject', {
+        //   Bucket: bucketName,
+        //   Key: `posts-${fileName}`,
+        //   // ACL: "public-read",
+        //   ContentType: fileType,
+        // });
 
-        const imageUrl = signedUrl.split('?')[0];
+        // const imageUrl = signedUrl.split('?')[0];
 
         //1 === processing
-        const id = await PostsService.addPost(caption, imageUrl, 1);
-        res.status(201).json({ id, signedUrl });
+        // const id = await PostsService.addPost(caption, imageUrl, 1);
+        // res.status(201).json({ id, signedUrl });
+        res.status(201).json({});
         return;
       }
       //--- posts with image---
