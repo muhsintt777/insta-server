@@ -9,6 +9,6 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-app.use('/', appRouter);
+app.use('/api', appRouter);
 
 export { app };
