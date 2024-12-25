@@ -6,6 +6,14 @@ import { UserService } from './user-service';
 import { CreateUserReqSchema, UserIdSchema } from './user-schema';
 
 export class UserController {
+  static async getCurrentUser(req: Request, res: Response) {
+    const userID = UserIdSchema.parse(req.body.token?.id);
+    const result = await UserService.getUser(userID);
+    res
+      .status(HTTP_STATUS_CODES.OK)
+      .json(new ApiResponse(result, HTTP_STATUS_CODES.OK));
+  }
+
   static async getUser(req: Request, res: Response) {
     const userID = UserIdSchema.parse(req.params.id);
     const result = await UserService.getUser(userID);
