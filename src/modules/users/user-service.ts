@@ -25,6 +25,24 @@ export class UserService {
     fullName: string,
     profileImage: string | null,
   ): Promise<string> {
+    const [isEmailExists, isUsernameExists] = await Promise.all([
+      UserModel.exists({ email }),
+      UserModel.exists({ username }),
+    ]);
+    if (isEmailExists || isUsernameExists) {
+      const errorMessage =
+        isEmailExists && isUsernameExists
+          ? 'Email and username already exists'
+          : isEmailExists
+            ? 'Email already exists'
+            : 'Username already exists';
+      throw new ApiError(
+        HTTP_STATUS_CODES.CONFLICT,
+        errorMessage,
+        'RESOURCE_ALREADY_EXISTS',
+      );
+    }
+
     const result = await UserModel.create({
       email,
       username,
@@ -32,7 +50,6 @@ export class UserService {
       fullName,
       profileImage,
     });
-
     return result._id.toString();
   }
 
