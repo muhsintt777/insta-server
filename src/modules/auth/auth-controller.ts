@@ -38,10 +38,14 @@ export class AuthController {
       .status(HTTP_STATUS_CODES.OK)
       .cookie('refreshToken', tokens.refreshToken, {
         secure: true,
+        sameSite: 'none',
+        httpOnly: true,
         maxAge: COOKIE_EXPIRY_IN_MS,
       })
       .cookie('accessToken', tokens.accessToken, {
         secure: true,
+        sameSite: 'none',
+        httpOnly: true,
         maxAge: COOKIE_EXPIRY_IN_MS,
       })
       .json(new ApiResponse(tokens, HTTP_STATUS_CODES.OK, 'Login success'));
