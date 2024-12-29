@@ -59,8 +59,8 @@ export class AuthService {
       );
     }
 
-    const accessToken = Token.createAccessToken(user.id);
-    const refreshToken = Token.createRefreshToken(user.id);
+    const accessToken = Token.createAccessToken({ userId: user.id });
+    const refreshToken = Token.createRefreshToken({ userId: user.id });
     await UserModel.findByIdAndUpdate(user.id, { refreshToken: refreshToken });
 
     return { accessToken, refreshToken };
@@ -86,7 +86,7 @@ export class AuthService {
         'AUTH_UNAUTHORIZED',
       );
 
-    return Token.createAccessToken(user.id);
+    return Token.createAccessToken({ userId: user.id });
   }
 
   static async logout(userID: string) {
