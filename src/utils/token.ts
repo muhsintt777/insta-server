@@ -31,7 +31,8 @@ export class Token {
 
   static verifyRefreshToken(token: string) {
     try {
-      return jwt.verify(token, REFRESH_TOKEN_KEY);
+      const decoded = jwt.verify(token, REFRESH_TOKEN_KEY);
+      return decoded as { id: string };
     } catch (error) {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
