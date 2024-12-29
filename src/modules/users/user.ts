@@ -6,11 +6,11 @@ export type User = {
   username: string;
   password: string;
   fullName: string;
-  bio?: string | null | undefined;
-  profileImage?: string | null | undefined;
-  gender?: number | null | undefined;
-  mobileNo?: string | null | undefined;
-  refreshToken?: string | null | undefined;
+  bio: string | null;
+  profileImage: string | null;
+  gender: number | null;
+  mobileNo: string | null;
+  refreshToken: string | null;
   createdAt: number;
   updatedAt: number;
 };
@@ -24,8 +24,8 @@ export interface UserWithoutSensitive
   email: string;
   username: string;
   fullName: string;
-  bio?: string | null | undefined;
-  profileImage?: string | null | undefined;
-  gender?: number | null | undefined;
-  mobileNo?: string | null | undefined;
+  bio: string | null;
+  profileImage: string | null;
+  gender: number | null;
+  mobileNo: string | null;
 }

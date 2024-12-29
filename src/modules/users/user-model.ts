@@ -24,23 +24,26 @@ const userSchema = new Schema(
     },
     bio: {
       type: SchemaTypes.String,
-      optional: true,
+      required: true,
+      default: null,
     },
     profileImage: {
       type: SchemaTypes.String,
-      optional: true,
+      required: true,
+      default: null,
     },
     gender: {
       type: SchemaTypes.Number,
-      optional: true,
+      required: true,
+      default: null,
     },
     mobileNo: {
       type: SchemaTypes.String,
-      optional: true,
+      required: true,
     },
     refreshToken: {
       type: SchemaTypes.String,
-      optional: true,
+      default: null,
     },
   },
   { timestamps: true },
