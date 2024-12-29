@@ -55,6 +55,13 @@ export class UserService {
 
   static async deleteUser(id: string): Promise<string> {
     const result = await UserModel.findByIdAndDelete(id);
-    return result.id;
+    if (!result)
+      throw new ApiError(
+        HTTP_STATUS_CODES.NOT_FOUND,
+        'User not found',
+        'RESOURCE_NOT_FOUND',
+      );
+
+    return result._id.toString();
   }
 }

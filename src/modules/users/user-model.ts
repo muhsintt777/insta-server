@@ -1,8 +1,9 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import { Crypto } from 'utils/crypto';
+import { User } from './user';
 
-const userSchema = new Schema(
+const userSchema = new Schema<User>(
   {
     email: {
       type: SchemaTypes.String,

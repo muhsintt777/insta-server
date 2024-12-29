@@ -65,4 +65,31 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
+
+  static async refreshToken(
+    userID: string,
+    refreshToken: string,
+  ): Promise<string> {
+    console.log(userID);
+
+    const user = await UserModel.findById<User>(userID);
+    if (!user)
+      throw new ApiError(
+        HTTP_STATUS_CODES.NOT_FOUND,
+        'User not found',
+        'RESOURCE_NOT_FOUND',
+      );
+    if (user.refreshToken !== refreshToken)
+      throw new ApiError(
+        HTTP_STATUS_CODES.UNAUTHORIZED,
+        'Invalid refresh token',
+        'AUTH_UNAUTHORIZED',
+      );
+
+    return Token.createAccessToken(user.id);
+  }
+
+  static async logout(userID: string) {
+    await UserModel.findByIdAndUpdate(userID, { refreshToken: null });
+  }
 }
