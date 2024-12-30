@@ -5,8 +5,6 @@ export const REGEX = {
   username: /^(?=.{3,20}$)[a-zA-Z0-9_]+$/,
 } as const;
 
-export const COOKIE_EXPIRY_IN_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
-
 export const FILE_TYPE = {
   imagePNG: 'image/png',
   imageJPEG: 'image/jpeg',
