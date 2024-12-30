@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
-import { COOKIE_EXPIRY_IN_MS, HTTP_STATUS_CODES } from 'configs/constants';
+import { HTTP_STATUS_CODES } from 'configs/constants';
+import { ENV } from 'configs/env';
 import { ApiResponse } from 'utils/api-response';
 import { ApiError } from 'utils/api-error';
 import { Token } from 'utils/token';
 import { LoginReqSchema } from './auth-schema';
 import { AuthService } from './auth-service';
+
+const COOKIE_EXPIRY = Number(ENV.COOKIE_EXPIRY_IN_DAYS) * 24 * 60 * 60 * 1000; //in days
 
 export class AuthController {
   static async login(req: Request, res: Response) {
@@ -41,13 +44,13 @@ export class AuthController {
         secure: true,
         sameSite: 'none',
         httpOnly: true,
-        maxAge: COOKIE_EXPIRY_IN_MS,
+        maxAge: COOKIE_EXPIRY,
       })
       .cookie('accessToken', tokens.accessToken, {
         secure: true,
         sameSite: 'none',
         httpOnly: true,
-        maxAge: COOKIE_EXPIRY_IN_MS,
+        maxAge: COOKIE_EXPIRY,
       })
       .json(new ApiResponse(tokens, HTTP_STATUS_CODES.OK, 'Login success'));
     return;
@@ -66,7 +69,7 @@ export class AuthController {
 
     const decodedToken = Token.verifyRefreshToken(refreshToken);
     const newToken = await AuthService.refreshToken(
-      decodedToken.id,
+      decodedToken.userId,
       refreshToken,
     );
 
@@ -76,7 +79,7 @@ export class AuthController {
         secure: true,
         sameSite: 'none',
         httpOnly: true,
-        maxAge: COOKIE_EXPIRY_IN_MS,
+        maxAge: COOKIE_EXPIRY,
       })
       .json(
         new ApiResponse(

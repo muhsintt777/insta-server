@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { HTTP_STATUS_CODES } from 'configs/constants';
-import { ApiError } from './api-error';
 import { ENV } from 'configs/env';
+import { ApiError } from './api-error';
 
 interface AccessTokenData {
   userId: string;
@@ -14,7 +14,7 @@ interface RefreshTokenData {
 export class Token {
   static createAccessToken(payload: AccessTokenData) {
     return jwt.sign(payload, ENV.ACCESS_TOKEN_KEY, {
-      expiresIn: '1h',
+      expiresIn: ENV.ACCESS_TOKEN_EXPIRY,
     });
   }
 
@@ -33,7 +33,7 @@ export class Token {
 
   static createRefreshToken(payload: RefreshTokenData) {
     return jwt.sign(payload, ENV.REFRESH_TOKEN_KEY, {
-      expiresIn: '1d',
+      expiresIn: ENV.REFRESH_TOKEN_EXPIRY,
     });
   }
 
