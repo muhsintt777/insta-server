@@ -7,7 +7,7 @@ import { CreateUserReqSchema, UserIdSchema } from './user-schema';
 
 export class UserController {
   static async getCurrentUser(req: Request, res: Response) {
-    const userID = UserIdSchema.parse(req.body.token?.id);
+    const userID = UserIdSchema.parse(req.body.token?.userId);
     const result = await UserService.getUser(userID);
     res
       .status(HTTP_STATUS_CODES.OK)

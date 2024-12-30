@@ -89,7 +89,7 @@ export class AuthController {
   }
 
   static async logout(req: Request, res: Response) {
-    const userID = req.body.token?.id;
+    const userID = req.body.token?.userId;
     await AuthService.logout(userID);
 
     res.clearCookie('refreshToken');
