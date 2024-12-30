@@ -58,8 +58,6 @@ export class AuthController {
 
   static async refreshToken(req: Request, res: Response) {
     const refreshToken = req.cookies.refreshToken as string;
-    console.log(req.cookies);
-
     if (!refreshToken)
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
