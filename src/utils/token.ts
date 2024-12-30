@@ -45,7 +45,7 @@ export class Token {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
         'Token expired',
-        'AUTH_TOKEN_EXPIRED',
+        'AUTH_UNAUTHORIZED',
       );
     }
   }
