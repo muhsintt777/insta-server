@@ -8,7 +8,7 @@ export class UserService {
     const result = await UserModel.findById(id, {
       password: 0,
       refreshToken: 0,
-    });
+    }).lean();
     if (!result)
       throw new ApiError(
         HTTP_STATUS_CODES.NOT_FOUND,
