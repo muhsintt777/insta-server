@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { HTTP_STATUS_CODES } from 'configs/constants';
 import { ApiResponse } from 'utils/api-response';
 import { uploadToCloud } from 'utils/cloud';
 import { UserService } from './user-service';
@@ -9,18 +8,14 @@ export class UserController {
   static async getCurrentUser(req: Request, res: Response) {
     const userID = UserIdSchema.parse(req.body.token?.userId);
     const result = await UserService.getUser(userID);
-    res
-      .status(HTTP_STATUS_CODES.OK)
-      .json(new ApiResponse(result, HTTP_STATUS_CODES.OK));
+    res.status(200).json(new ApiResponse(result));
   }
 
   static async getUser(req: Request, res: Response) {
     const userID = UserIdSchema.parse(req.params.id);
     const result = await UserService.getUser(userID);
 
-    res
-      .status(HTTP_STATUS_CODES.OK)
-      .json(new ApiResponse(result, HTTP_STATUS_CODES.OK));
+    res.status(200).json(new ApiResponse(result));
   }
 
   static async createUser(req: Request, res: Response) {
@@ -46,25 +41,13 @@ export class UserController {
       profileImageUrl,
     );
 
-    res
-      .status(HTTP_STATUS_CODES.CREATED)
-      .json(
-        new ApiResponse(
-          { id: userID },
-          HTTP_STATUS_CODES.CREATED,
-          'User created',
-        ),
-      );
+    res.status(201).json(new ApiResponse({ id: userID }, 'User created'));
   }
 
   static async deleteUser(req: Request, res: Response) {
     const id = UserIdSchema.parse(req.params.id);
     const userID = await UserService.deleteUser(id);
 
-    res
-      .status(HTTP_STATUS_CODES.OK)
-      .json(
-        new ApiResponse({ id: userID }, HTTP_STATUS_CODES.OK, 'User deleted'),
-      );
+    res.status(200).json(new ApiResponse({ id: userID }, 'User deleted'));
   }
 }

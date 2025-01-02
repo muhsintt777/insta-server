@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-import { HTTP_STATUS_CODES } from 'configs/constants';
 import { ENV } from 'configs/env';
 import { ApiResponse } from 'utils/api-response';
-import { ApiError } from 'utils/api-error';
 import { Token } from 'utils/token';
 import { LoginReqSchema } from './auth-schema';
 import { AuthService } from './auth-service';
+import { CustomError } from 'utils/error';
 
 const COOKIE_EXPIRY = Number(ENV.COOKIE_EXPIRY_IN_DAYS) * 24 * 60 * 60 * 1000; //in days
 
@@ -31,15 +30,11 @@ export class AuthController {
         password: loginDetails.password,
       });
     } else {
-      throw new ApiError(
-        HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY,
-        'Email or Username is required',
-        'VALIDATION_REQUIRED_FIELD_MISSING',
-      );
+      throw new CustomError('BAD_REQUEST', 'Email or username is required');
     }
 
     res
-      .status(HTTP_STATUS_CODES.OK)
+      .status(200)
       .cookie('refreshToken', tokens.refreshToken, {
         secure: true,
         sameSite: 'none',
@@ -52,18 +47,14 @@ export class AuthController {
         httpOnly: true,
         maxAge: COOKIE_EXPIRY,
       })
-      .json(new ApiResponse(tokens, HTTP_STATUS_CODES.OK, 'Login success'));
+      .json(new ApiResponse(tokens, 'Login success'));
     return;
   }
 
   static async refreshToken(req: Request, res: Response) {
     const refreshToken = req.cookies.refreshToken as string;
     if (!refreshToken)
-      throw new ApiError(
-        HTTP_STATUS_CODES.UNAUTHORIZED,
-        'Token required',
-        'AUTH_TOKEN_MISSING',
-      );
+      throw new CustomError('AUTH_UNAUTHORIZED', 'Token required');
 
     const decodedToken = Token.verifyRefreshToken(refreshToken);
     const newToken = await AuthService.refreshToken(
@@ -72,20 +63,14 @@ export class AuthController {
     );
 
     res
-      .status(HTTP_STATUS_CODES.OK)
+      .status(200)
       .cookie('accessToken', newToken, {
         secure: true,
         sameSite: 'none',
         httpOnly: true,
         maxAge: COOKIE_EXPIRY,
       })
-      .json(
-        new ApiResponse(
-          { accessToken: newToken },
-          HTTP_STATUS_CODES.OK,
-          'Refresh success',
-        ),
-      );
+      .json(new ApiResponse({ accessToken: newToken }, 'Refresh success'));
   }
 
   static async logout(req: Request, res: Response) {
@@ -94,10 +79,6 @@ export class AuthController {
 
     res.clearCookie('refreshToken');
     res.clearCookie('accessToken');
-    res
-      .status(HTTP_STATUS_CODES.OK)
-      .json(
-        new ApiResponse({ id: userID }, HTTP_STATUS_CODES.OK, 'Logout success'),
-      );
+    res.status(200).json(new ApiResponse({ id: userID }, 'Logout success'));
   }
 }

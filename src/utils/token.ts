@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { HTTP_STATUS_CODES } from 'configs/constants';
 import { ENV } from 'configs/env';
-import { ApiError } from './api-error';
+import { CustomError } from './error';
 
 interface AccessTokenData {
   userId: string;
@@ -23,11 +22,7 @@ export class Token {
       const decoded = jwt.verify(token, ENV.ACCESS_TOKEN_KEY);
       return decoded as AccessTokenData;
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.UNAUTHORIZED,
-        'Token expired',
-        'AUTH_TOKEN_EXPIRED',
-      );
+      throw new CustomError('AUTH_TOKEN_EXPIRED', 'Token expired');
     }
   }
 
@@ -42,11 +37,7 @@ export class Token {
       const decoded = jwt.verify(token, ENV.REFRESH_TOKEN_KEY);
       return decoded as RefreshTokenData;
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.UNAUTHORIZED,
-        'Token expired',
-        'AUTH_UNAUTHORIZED',
-      );
+      throw new CustomError('AUTH_UNAUTHORIZED', 'Invalid token');
     }
   }
 }

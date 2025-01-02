@@ -1,13 +1,15 @@
 export class ApiResponse {
-  statusCode: number;
   message: string;
-  success: boolean;
+  errorType: string | null;
   data: any;
 
-  constructor(data: any, statusCode: number, message: string = 'successfull') {
-    this.statusCode = statusCode;
+  constructor(
+    data: any,
+    message: string = 'successfull',
+    errorType: string | null = null,
+  ) {
     this.message = message;
     this.data = data;
-    this.success = statusCode < 400;
+    this.errorType = errorType;
   }
 }

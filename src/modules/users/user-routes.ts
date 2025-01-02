@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AuthMiddleware } from 'middlewares/auth-middleware';
 import { fileUpload } from 'middlewares/file-upload-middleware';
-import { errorHandler } from 'utils/error-handler';
+import { asyncHandler } from 'utils/async-handler';
 import { UserController } from './user-controller';
 
 const router = Router();
@@ -9,25 +9,25 @@ const router = Router();
 router.post(
   '/',
   fileUpload.fields([{ name: 'profileImage', maxCount: 1 }]),
-  errorHandler(UserController.createUser),
+  asyncHandler(UserController.createUser),
 );
 
 router.get(
   '/me',
-  errorHandler(AuthMiddleware.verifyToken),
-  errorHandler(UserController.getCurrentUser),
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(UserController.getCurrentUser),
 );
 
 router.get(
   '/:id',
-  errorHandler(AuthMiddleware.verifyToken),
-  errorHandler(UserController.getUser),
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(UserController.getUser),
 );
 
 router.delete(
   '/:id',
-  errorHandler(AuthMiddleware.verifyToken),
-  errorHandler(UserController.deleteUser),
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(UserController.deleteUser),
 );
 
 export { router as userRouter };

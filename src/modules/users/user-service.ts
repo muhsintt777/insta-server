@@ -1,7 +1,6 @@
-import { ApiError } from 'utils/api-error';
+import { CustomError } from 'utils/error';
 import { UserWithoutSensitive } from './user';
 import { UserModel } from './user-model';
-import { HTTP_STATUS_CODES } from 'configs/constants';
 
 export class UserService {
   static async getUser(id: string): Promise<UserWithoutSensitive> {
@@ -9,12 +8,7 @@ export class UserService {
       password: 0,
       refreshToken: 0,
     }).lean();
-    if (!result)
-      throw new ApiError(
-        HTTP_STATUS_CODES.NOT_FOUND,
-        'User not found',
-        'RESOURCE_NOT_FOUND',
-      );
+    if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'User not found');
     return result;
   }
 
@@ -36,11 +30,7 @@ export class UserService {
           : isEmailExists
             ? 'Email already exists'
             : 'Username already exists';
-      throw new ApiError(
-        HTTP_STATUS_CODES.CONFLICT,
-        errorMessage,
-        'RESOURCE_ALREADY_EXISTS',
-      );
+      throw new CustomError('RESOURCE_CONFLICT', errorMessage);
     }
 
     const result = await UserModel.create({
@@ -55,12 +45,7 @@ export class UserService {
 
   static async deleteUser(id: string): Promise<string> {
     const result = await UserModel.findByIdAndDelete(id);
-    if (!result)
-      throw new ApiError(
-        HTTP_STATUS_CODES.NOT_FOUND,
-        'User not found',
-        'RESOURCE_NOT_FOUND',
-      );
+    if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'User not found');
 
     return result._id.toString();
   }

@@ -1,8 +1,7 @@
-import { HTTP_STATUS_CODES } from 'configs/constants';
 import { User } from 'modules/users/user';
 import { UserModel } from 'modules/users/user-model';
-import { ApiError } from 'utils/api-error';
 import { Crypto } from 'utils/crypto';
+import { CustomError } from 'utils/error';
 import { Token } from 'utils/token';
 
 interface EmailLogin {
@@ -39,11 +38,7 @@ export class AuthService {
     }
 
     if (!user) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.NOT_FOUND,
-        'User not found',
-        'RESOURCE_NOT_FOUND',
-      );
+      throw new CustomError('AUTH_UNAUTHORIZED', 'Invalid credentials');
     }
 
     const isPasswordValid = Crypto.compare(
@@ -52,11 +47,7 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      throw new ApiError(
-        HTTP_STATUS_CODES.UNAUTHORIZED,
-        'Invalid credentials',
-        'AUTH_INVALID_CREDENTIALS',
-      );
+      throw new CustomError('AUTH_UNAUTHORIZED', 'Invalid credentials');
     }
 
     const accessToken = Token.createAccessToken({ userId: user.id });
@@ -73,18 +64,8 @@ export class AuthService {
     console.log(userID);
 
     const user = await UserModel.findById<User>(userID);
-    if (!user)
-      throw new ApiError(
-        HTTP_STATUS_CODES.NOT_FOUND,
-        'User not found',
-        'RESOURCE_NOT_FOUND',
-      );
-    if (user.refreshToken !== refreshToken)
-      throw new ApiError(
-        HTTP_STATUS_CODES.UNAUTHORIZED,
-        'Invalid refresh token',
-        'AUTH_UNAUTHORIZED',
-      );
+    if (user?.refreshToken !== refreshToken)
+      throw new CustomError('AUTH_UNAUTHORIZED', 'Unauthorized');
 
     return Token.createAccessToken({ userId: user.id });
   }

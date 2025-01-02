@@ -1,8 +1,7 @@
 import fs from 'fs';
 import { v2 as cloudinary } from 'cloudinary';
-import { HTTP_STATUS_CODES } from 'configs/constants';
-import { ApiError } from './api-error';
 import { ENV } from 'configs/env';
+import { CustomError } from './error';
 
 cloudinary.config({
   cloud_name: ENV.CLOUDINARY_NAME,
@@ -19,10 +18,6 @@ export async function uploadToCloud(filePath: string) {
     return result;
   } catch (error) {
     fs.unlinkSync(filePath);
-    throw new ApiError(
-      HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-      'File upload failed',
-      'INTERNAL_SERVER_ERROR',
-    );
+    throw new CustomError('INTERNAL_SERVER_ERROR', 'Failed to upload file');
   }
 }
