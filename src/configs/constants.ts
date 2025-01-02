@@ -5,10 +5,6 @@ export const REGEX = {
   username: /^(?=.{3,20}$)[a-zA-Z0-9_]+$/,
 } as const;
 
-export const COOKIE_EXPIRY_IN_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
-export const ACCESS_TOKEN_EXPIRY_IN_MINUTES = 30;
-export const REFRESH_TOKEN_EXPIRY_IN_MINUTES = 60 * 24 * 1; // 1 day
-
 export const FILE_TYPE = {
   imagePNG: 'image/png',
   imageJPEG: 'image/jpeg',
@@ -46,4 +42,5 @@ export const HTTP_STATUS_CODES = {
   NOT_FOUND: 404,
   UNPROCESSABLE_ENTITY: 422,
   INTERNAL_SERVER_ERROR: 500,
+  CONFLICT: 409,
 } as const;

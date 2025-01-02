@@ -2,9 +2,10 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 // import { dbConnection } from "configs/db";
-import { app } from './app';
 import { connectDB } from 'configs/mongoDB';
-const PORT = process.env.PORT || '3500';
+import { ENV } from 'configs/env';
+import { app } from './app';
+const PORT = ENV.PORT || '3500';
 
 async function startServer() {
   try {

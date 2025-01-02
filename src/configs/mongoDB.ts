@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-const MONGO_URI = process.env.MONGO_URI;
+import { ENV } from './env';
 
 export const connectDB = async () => {
   try {
-    if (!MONGO_URI) throw new Error('no db url found');
-    await mongoose.connect(MONGO_URI, {
+    if (!ENV.MONGO_URI) throw new Error('no db url found');
+    await mongoose.connect(ENV.MONGO_URI, {
       dbName: 'test',
     });
     console.log(`mongoDB connected`);

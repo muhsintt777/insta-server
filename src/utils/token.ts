@@ -1,25 +1,27 @@
 import jwt from 'jsonwebtoken';
-import { ApiError } from './api-error';
 import { HTTP_STATUS_CODES } from 'configs/constants';
-const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY as string;
-const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY as string;
+import { ENV } from 'configs/env';
+import { ApiError } from './api-error';
+
+interface AccessTokenData {
+  userId: string;
+}
+
+interface RefreshTokenData {
+  userId: string;
+}
 
 export class Token {
-  static createAccessToken(userID: string) {
-    return jwt.sign({ id: userID }, ACCESS_TOKEN_KEY, {
-      expiresIn: '1h',
-    });
-  }
-
-  static createRefreshToken(userID: string) {
-    return jwt.sign({ id: userID }, REFRESH_TOKEN_KEY, {
-      expiresIn: '1d',
+  static createAccessToken(payload: AccessTokenData) {
+    return jwt.sign(payload, ENV.ACCESS_TOKEN_KEY, {
+      expiresIn: ENV.ACCESS_TOKEN_EXPIRY,
     });
   }
 
   static verifyAccessToken(token: string) {
     try {
-      return jwt.verify(token, ACCESS_TOKEN_KEY);
+      const decoded = jwt.verify(token, ENV.ACCESS_TOKEN_KEY);
+      return decoded as AccessTokenData;
     } catch (error) {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
@@ -29,14 +31,21 @@ export class Token {
     }
   }
 
+  static createRefreshToken(payload: RefreshTokenData) {
+    return jwt.sign(payload, ENV.REFRESH_TOKEN_KEY, {
+      expiresIn: ENV.REFRESH_TOKEN_EXPIRY,
+    });
+  }
+
   static verifyRefreshToken(token: string) {
     try {
-      return jwt.verify(token, REFRESH_TOKEN_KEY);
+      const decoded = jwt.verify(token, ENV.REFRESH_TOKEN_KEY);
+      return decoded as RefreshTokenData;
     } catch (error) {
       throw new ApiError(
         HTTP_STATUS_CODES.UNAUTHORIZED,
         'Token expired',
-        'AUTH_TOKEN_EXPIRED',
+        'AUTH_UNAUTHORIZED',
       );
     }
   }

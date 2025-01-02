@@ -13,6 +13,12 @@ router.post(
 );
 
 router.get(
+  '/me',
+  errorHandler(AuthMiddleware.verifyToken),
+  errorHandler(UserController.getCurrentUser),
+);
+
+router.get(
   '/:id',
   errorHandler(AuthMiddleware.verifyToken),
   errorHandler(UserController.getUser),
