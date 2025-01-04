@@ -5,7 +5,7 @@ export class Crypto {
     return hash(payload, salt || 10);
   }
 
-  static async compare(payload: string, hash: string) {
+  static async compare(payload: string, hash: string): Promise<boolean> {
     return compare(payload, hash);
   }
 }
