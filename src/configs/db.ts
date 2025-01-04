@@ -1,39 +1,15 @@
-import { Sequelize, QueryTypes } from 'sequelize';
-// const dbUrl = process.env.DB_CONNECTION_URI || "";
-const port = Number(process.env.DB_PORT);
+import mongoose from 'mongoose';
+import { ENV } from './env';
 
-export const dbConnection = new Sequelize('insta', 'postgres', 'postgres', {
-  dialect: 'postgres',
-  host: 'localhost',
-  port: port,
-});
-
-export class Db {
-  static async select(sql: string, replacements: any): Promise<any[]> {
-    return dbConnection.query(sql, {
-      replacements,
-      type: QueryTypes.SELECT,
+export const connectDB = async () => {
+  try {
+    if (!ENV.MONGO_URI) throw new Error('no db url found');
+    await mongoose.connect(ENV.MONGO_URI, {
+      dbName: 'test',
     });
+    console.log(`mongoDB connected`);
+  } catch (err) {
+    console.log('mongodb connection failed', err);
+    process.exit(1);
   }
-
-  static async insert(sql: string, replacements: any): Promise<[any, any]> {
-    return dbConnection.query(sql, {
-      bind: replacements,
-      type: QueryTypes.INSERT,
-    });
-  }
-
-  static async delete(sql: string, replacements: any): Promise<any> {
-    return dbConnection.query(sql, {
-      bind: replacements,
-      type: QueryTypes.DELETE,
-    });
-  }
-
-  static async update(sql: string, replacements: any): Promise<any> {
-    return dbConnection.query(sql, {
-      bind: replacements,
-      type: QueryTypes.UPDATE,
-    });
-  }
-}
+};

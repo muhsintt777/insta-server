@@ -7,6 +7,7 @@ import { CustomError, ERROR_TYPE } from 'utils/error';
 import { ApiResponse } from 'utils/api-response';
 import { getZodErrMessage } from 'utils/common';
 import { appRouter } from './routes';
+import { healthRouter } from 'health/health-routes';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', appRouter);
+app.use('/health', healthRouter);
 app.use('/*', (_req, res) =>
   res
     .status(404)

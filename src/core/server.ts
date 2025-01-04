@@ -1,20 +1,15 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-// import { dbConnection } from "configs/db";
-import { connectDB } from 'configs/mongoDB';
 import { ENV } from 'configs/env';
 import { app } from './app';
-const PORT = ENV.PORT || '3500';
+import { connectDB } from 'configs/db';
 
 async function startServer() {
   try {
-    // await dbConnection.authenticate();
-    // await dbConnection.sync();
     await connectDB();
-
-    app.listen(PORT, () => {
-      console.log(`Server started at ${PORT}`);
+    app.listen(ENV.PORT || 3500, () => {
+      console.log(`Server started at ${ENV.PORT || 3500}`);
     });
   } catch (err) {
     console.error(err.message);
