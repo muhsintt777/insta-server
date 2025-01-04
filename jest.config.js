@@ -7,5 +7,6 @@ module.exports = {
   },
   moduleNameMapper: {
     'configs/(.*)': '<rootDir>/src/configs/$1',
+    'utils/(.*)': '<rootDir>/src/utils/$1',
   },
 };
