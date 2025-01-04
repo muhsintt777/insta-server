@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node ./dist/main/server.js",
+    "start": "node ./dist/core/server.js",
     "build": "tsc && tsc-alias",
-    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/main/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/core/server.ts",
     "format": "prettier --write './src/**/*.{ts,js,json,md}'"
   },
   "dependencies": {
