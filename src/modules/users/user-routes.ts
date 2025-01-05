@@ -13,7 +13,7 @@ router.post(
 );
 
 router.get(
-  '/me',
+  '/currentuser',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(UserController.getCurrentUser),
 );
