@@ -1,9 +1,20 @@
-import { model, Schema, SchemaTypes } from 'mongoose';
+import { Document, Model, model, Schema, SchemaTypes } from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import { Crypto } from 'utils/crypto';
-import { User } from './user';
 
-const userSchema = new Schema<User>(
+interface CustomDocument extends Document {
+  email: string;
+  username: string;
+  password: string;
+  fullName: string;
+  bio: string | null;
+  profileImage: string | null;
+  gender: number | null;
+  mobileNo: string | null;
+  refreshToken: string | null;
+}
+
+const userSchema = new Schema<CustomDocument>(
   {
     email: {
       type: SchemaTypes.String,
@@ -51,7 +62,6 @@ const userSchema = new Schema<User>(
 );
 
 userSchema.plugin(mongooseAggregatePaginate);
-
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
@@ -59,4 +69,20 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-export const UserModel = model('User', userSchema);
+interface ModelAttributes {
+  email: string;
+  username: string;
+  password: string;
+  fullName: string;
+  bio: string | null;
+  profileImage: string | null;
+  gender: number | null;
+  mobileNo: string | null;
+  refreshToken: string | null;
+}
+
+interface CustomModel extends Model<CustomDocument> {
+  build(attributes: ModelAttributes): CustomDocument;
+}
+
+export const UserModel = model<CustomDocument, CustomModel>('User', userSchema);

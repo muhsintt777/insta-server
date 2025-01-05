@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ApiResponse } from 'utils/api-response';
 import { uploadToCloud } from 'utils/cloud';
 import { UserService } from './user-service';
-import { CreateUserReqSchema, UserIdSchema } from './user-schema';
+import { CreateUserReqSchema, UserIdSchema } from './user-validation';
 
 export class UserController {
   static async getCurrentUser(req: Request, res: Response) {
