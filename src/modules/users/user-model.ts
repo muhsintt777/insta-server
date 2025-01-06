@@ -1,8 +1,8 @@
-import { Document, Model, model, Schema, SchemaTypes } from 'mongoose';
+import { model, Schema, SchemaTypes } from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import { Crypto } from 'utils/crypto';
 
-interface CustomDocument extends Document {
+interface Attributes {
   email: string;
   username: string;
   password: string;
@@ -12,9 +12,11 @@ interface CustomDocument extends Document {
   gender: number | null;
   mobileNo: string | null;
   refreshToken: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 
-const userSchema = new Schema<CustomDocument>(
+const userSchema = new Schema<Attributes>(
   {
     email: {
       type: SchemaTypes.String,
@@ -58,31 +60,27 @@ const userSchema = new Schema<CustomDocument>(
       default: null,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+
+    // calling .lean() on document will cause issues with this config!!
+    toJSON: {
+      transform(_doc, ret) {
+        delete ret.password;
+        delete ret.refreshToken;
+        delete ret.__v;
+        ret.id = ret._id;
+        delete ret._id;
+      },
+    },
+  },
 );
 
 userSchema.plugin(mongooseAggregatePaginate);
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
-
   this.password = await Crypto.hashString(this.password);
   next();
 });
 
-interface ModelAttributes {
-  email: string;
-  username: string;
-  password: string;
-  fullName: string;
-  bio: string | null;
-  profileImage: string | null;
-  gender: number | null;
-  mobileNo: string | null;
-  refreshToken: string | null;
-}
-
-interface CustomModel extends Model<CustomDocument> {
-  build(attributes: ModelAttributes): CustomDocument;
-}
-
-export const UserModel = model<CustomDocument, CustomModel>('User', userSchema);
+export const UserModel = model('User', userSchema);
