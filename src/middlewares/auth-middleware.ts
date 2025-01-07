@@ -1,6 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { CustomError } from 'utils/error';
-import { Token } from 'utils/token';
+import { AccessTokenData, Token } from 'utils/token';
+
+declare global {
+  namespace Express {
+    interface Request {
+      token?: AccessTokenData;
+    }
+  }
+}
 
 export class AuthMiddleware {
   static async verifyToken(req: Request, _res: Response, next: NextFunction) {
