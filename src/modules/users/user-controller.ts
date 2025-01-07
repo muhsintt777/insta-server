@@ -14,7 +14,6 @@ export class UserController {
   static async getUser(req: Request, res: Response) {
     const userID = UserIdSchema.parse(req.params.id);
     const result = await UserService.getUser(userID);
-
     res.status(200).json(new ApiResponse(result));
   }
 
@@ -47,7 +46,6 @@ export class UserController {
   static async deleteUser(req: Request, res: Response) {
     const id = UserIdSchema.parse(req.params.id);
     const userID = await UserService.deleteUser(id);
-
     res.status(200).json(new ApiResponse({ id: userID }, 'User deleted'));
   }
 }
