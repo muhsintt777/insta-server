@@ -6,7 +6,7 @@ import { CreateUserReqSchema, UserIdSchema } from './user-validation';
 
 export class UserController {
   static async getCurrentUser(req: Request, res: Response) {
-    const userID = UserIdSchema.parse(req.body.token?.userId);
+    const userID = req.token?.userId!;
     const result = await UserService.getUser(userID);
     res.status(200).json(new ApiResponse(result));
   }
