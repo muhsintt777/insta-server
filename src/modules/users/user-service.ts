@@ -37,7 +37,7 @@ export class UserService {
       profileImage,
     });
 
-    return result.id;
+    return result._id.toString();
   }
 
   static async deleteUser(id: string): Promise<string> {
