@@ -8,8 +8,9 @@ import { connectDB } from 'configs/db';
 async function startServer() {
   try {
     await connectDB();
-    app.listen(ENV.PORT || 3500, () => {
-      console.log(`Server started at ${ENV.PORT || 3500}`);
+    const port = ENV.PORT || 3500;
+    app.listen(port, () => {
+      console.log(`Server started at ${port}`);
     });
   } catch (err) {
     console.error(err.message);
