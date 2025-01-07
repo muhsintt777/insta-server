@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { ENV } from 'configs/env';
 import { CustomError } from './error';
 
-interface AccessTokenData {
+export interface AccessTokenData {
   userId: string;
 }
 

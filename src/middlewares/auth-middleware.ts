@@ -12,7 +12,7 @@ export class AuthMiddleware {
     }
 
     const decoded = Token.verifyAccessToken(token);
-    req.body.token = decoded;
+    req.token = decoded;
     next();
   }
 }
