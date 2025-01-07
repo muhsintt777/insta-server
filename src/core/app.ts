@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { corsOptions } from 'configs/cors';
-import { appRouter } from './routes';
+import { appRouter } from './router';
 import { notFoundHandler } from './not-found-handler';
 import { healthHandler } from './health-handler';
 import { errorHandler } from './error-handler';
