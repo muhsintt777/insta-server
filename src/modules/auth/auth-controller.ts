@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ENV } from 'configs/env';
 import { ApiResponse } from 'utils/api-response';
 import { Token } from 'utils/token';
-import { LoginReqSchema } from './auth-schema';
+import { LoginReqSchema } from './auth-validation';
 import { AuthService } from './auth-service';
 import { CustomError } from 'utils/error';
 
@@ -10,45 +10,34 @@ const COOKIE_EXPIRY = Number(ENV.COOKIE_EXPIRY_IN_DAYS) * 24 * 60 * 60 * 1000; /
 
 export class AuthController {
   static async login(req: Request, res: Response) {
-    const loginDetails = LoginReqSchema.parse(req.body);
+    const { email, username, password } = LoginReqSchema.parse(req.body);
 
-    let tokens: {
-      accessToken: string;
-      refreshToken: string;
-    } | null = null;
-
-    if (loginDetails.email) {
-      tokens = await AuthService.login({
-        type: 'EMAIL',
-        email: loginDetails.email,
-        password: loginDetails.password,
-      });
-    } else if (loginDetails.username) {
+    let tokens: { accessToken: string; refreshToken: string };
+    if (email) {
+      tokens = await AuthService.login({ type: 'EMAIL', email, password });
+    } else if (username) {
       tokens = await AuthService.login({
         type: 'USERNAME',
-        username: loginDetails.username,
-        password: loginDetails.password,
+        username,
+        password,
       });
-    } else {
-      throw new CustomError('BAD_REQUEST', 'Email or username is required');
     }
 
     res
       .status(200)
-      .cookie('refreshToken', tokens.refreshToken, {
+      .cookie('refreshToken', tokens!.refreshToken, {
         secure: true,
         sameSite: 'none',
         httpOnly: true,
         maxAge: COOKIE_EXPIRY,
       })
-      .cookie('accessToken', tokens.accessToken, {
+      .cookie('accessToken', tokens!.accessToken, {
         secure: true,
         sameSite: 'none',
         httpOnly: true,
         maxAge: COOKIE_EXPIRY,
       })
-      .json(new ApiResponse(tokens, 'Login success'));
-    return;
+      .json(new ApiResponse(tokens!, 'Login success'));
   }
 
   static async refreshToken(req: Request, res: Response) {

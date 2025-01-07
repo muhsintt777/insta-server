@@ -1,22 +1,9 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import { Crypto } from 'utils/crypto';
+import { UserCreateAttributes } from './user';
 
-interface Attributes {
-  email: string;
-  username: string;
-  password: string;
-  fullName: string;
-  bio: string | null;
-  profileImage: string | null;
-  gender: number | null;
-  mobileNo: string | null;
-  refreshToken: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-
-const userSchema = new Schema<Attributes>(
+const userSchema = new Schema<UserCreateAttributes>(
   {
     email: {
       type: SchemaTypes.String,

@@ -22,21 +22,15 @@ export class AuthService {
   static async login(loginDetails: LoginParams) {
     const { type } = loginDetails;
     let user: User | null = null;
-
     switch (type) {
       case 'EMAIL':
-        user = await UserModel.findOne({
-          email: loginDetails.email,
-        });
+        user = await UserModel.findOne({ email: loginDetails.email });
         break;
 
       case 'USERNAME':
-        user = await UserModel.findOne({
-          username: loginDetails.username,
-        });
+        user = await UserModel.findOne({ username: loginDetails.username });
         break;
     }
-
     if (!user) {
       throw new CustomError('AUTH_UNAUTHORIZED', 'Invalid credentials');
     }
@@ -45,15 +39,17 @@ export class AuthService {
       user.password,
       loginDetails.password,
     );
-
     if (!isPasswordValid) {
       throw new CustomError('AUTH_UNAUTHORIZED', 'Invalid credentials');
     }
 
-    const accessToken = Token.createAccessToken({ userId: user.id });
-    const refreshToken = Token.createRefreshToken({ userId: user.id });
-    await UserModel.findByIdAndUpdate(user.id, { refreshToken: refreshToken });
-
+    const accessToken = Token.createAccessToken({
+      userId: user._id.toString(),
+    });
+    const refreshToken = Token.createRefreshToken({
+      userId: user._id.toString(),
+    });
+    await UserModel.findByIdAndUpdate(user._id, { refreshToken: refreshToken });
     return { accessToken, refreshToken };
   }
 
@@ -61,13 +57,11 @@ export class AuthService {
     userID: string,
     refreshToken: string,
   ): Promise<string> {
-    console.log(userID);
-
-    const user = await UserModel.findById<User>(userID);
+    const user = await UserModel.findById(userID);
     if (user?.refreshToken !== refreshToken)
       throw new CustomError('AUTH_UNAUTHORIZED', 'Unauthorized');
 
-    return Token.createAccessToken({ userId: user.id });
+    return Token.createAccessToken({ userId: user._id.toString() });
   }
 
   static async logout(userID: string) {
