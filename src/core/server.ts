@@ -13,7 +13,7 @@ async function startServer() {
       console.log(`Server started at ${port}`);
     });
   } catch (err) {
-    console.error(err.message);
+    console.error('Unable to start server: ', err.message);
     process.exit(1);
   }
 }
