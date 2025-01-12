@@ -25,22 +25,19 @@ const userSchema = new Schema<UserCreateAttributes>(
     },
     bio: {
       type: SchemaTypes.String,
-      required: true,
       default: null,
     },
     profileImage: {
       type: SchemaTypes.String,
-      required: true,
       default: null,
     },
     gender: {
       type: SchemaTypes.Number,
-      required: true,
       default: null,
     },
     mobileNo: {
       type: SchemaTypes.String,
-      required: true,
+      default: null,
     },
     refreshToken: {
       type: SchemaTypes.String,
