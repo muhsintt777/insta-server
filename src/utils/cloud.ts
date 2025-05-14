@@ -1,21 +1,30 @@
 import fs from 'fs';
-import { v2 as cloudinary } from 'cloudinary';
+import AWS from 'aws-sdk';
 import { ENV } from 'configs/env';
 import { CustomError } from './error';
 
-cloudinary.config({
-  cloud_name: ENV.CLOUDINARY_NAME,
-  api_key: ENV.CLOUDINARY_API_KEY,
-  api_secret: ENV.CLOUDINARY_API_SECRET,
+const s3 = new AWS.S3({
+  accessKeyId: ENV.STORAGE_BUCKET_ACC_KEY,
+  secretAccessKey: ENV.STORAGE_BUCKET_SEC_KEY,
+  region: ENV.STORAGE_BUCKET_REGION,
+  signatureVersion: 'v4',
 });
 
 export async function uploadToCloud(filePath: string) {
   try {
-    const result = await cloudinary.uploader.upload(filePath, {
-      resource_type: 'auto',
-    });
+    const fileContent = fs.readFileSync(filePath);
+    const params = {
+      Bucket: ENV.STORAGE_BUCKET_NAME,
+      Key: `${Date.now()}-${filePath.split('/').pop()}`, // Unique file name
+      Body: fileContent,
+    };
+    const result = await s3.upload(params).promise();
+
     fs.unlinkSync(filePath);
-    return result;
+    return {
+      url: result.Location,
+      fileName: result.Key,
+    };
   } catch (error) {
     fs.unlinkSync(filePath);
     throw new CustomError('INTERNAL_SERVER_ERROR', 'Failed to upload file');
