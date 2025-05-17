@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ApiResponse } from 'utils/api-response';
-import { uploadToCloud } from 'utils/cloud';
+import { uploadToCloud } from 'utils/cloud-storage';
 import { UserService } from './user-service';
 import { CreateUserReqSchema, UserIdSchema } from './user-validation';
 
