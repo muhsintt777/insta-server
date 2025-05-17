@@ -2,9 +2,9 @@
 
 ## Setup
 
-Node version - 22
+Node version 22
 yarn
 
-## VS Code Extentions
+## VS Code Extentions Names
 
-prettier
+Prettier - Code formatter
