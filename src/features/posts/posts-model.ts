@@ -1,6 +1,7 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
+import { PostCreateAttributes } from './posts';
 
-const postSchema = new Schema(
+const postSchema = new Schema<PostCreateAttributes>(
   {
     image: {
       type: SchemaTypes.String,

@@ -1,33 +1,37 @@
-import { Post, PostsColumn } from './posts';
+import { PostModel } from './posts-model';
 
 export class PostsService {
   static async getPost(id: number) {
-    console.log(id, 'id');
+    const result = await PostModel.findById(id);
+    if (!result) throw new Error('Post not found');
+    return result;
   }
 
   static async getAllPost() {
-    const sql = 'SELECT * FROM posts';
+    const result = await PostModel.find();
+    if (!result) throw new Error('No posts found');
+    return result;
   }
 
-  static async addPost(
-    caption: string,
-    imageUrl: string | null,
-    status: 1 | 2,
-  ) {}
-
-  static async updatePost(id: number, columns: PostsColumn) {
-    const setStrings: string[] = [];
-    columns.forEach((item) => {
-      setStrings.push(`${item.name} = ${item.value}`);
+  static async addPost(caption: string, imageUrl: string, creator: string) {
+    const result = await PostModel.create({
+      caption,
+      imageUrl,
+      creator,
     });
+    if (!result) throw new Error('Failed to create post');
+    return result._id.toString();
+  }
 
-    const sql = `UPDATE ${'post'}
-    SET ${setStrings.join}
-    WHERE id = ${id};`;
+  static async updatePostCaption(id: number, caption: string) {
+    const result = await PostModel.findByIdAndUpdate(id, { caption });
+    if (!result) throw new Error('Post not found');
+    return result._id.toString();
   }
 
   static async deletePost(id: number) {
-    const sql = `DELETE FROM ${'post'} WHERE id = $id RETURNING id;`;
-    const replacements = { id };
+    const result = await PostModel.findByIdAndDelete(id);
+    if (!result) throw new Error('Post not found');
+    return result._id.toString();
   }
 }
