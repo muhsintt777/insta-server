@@ -29,7 +29,9 @@ export class UserController {
       ]?.[0]?.path || null;
     let profileImageUrl: string | null = null;
     if (profileImageLocalPath) {
-      profileImageUrl = (await uploadToCloud(profileImageLocalPath)).url;
+      profileImageUrl = (
+        await uploadToCloud(profileImageLocalPath, 'profile-images')
+      ).url;
     }
 
     const userID = await UserService.createUser(

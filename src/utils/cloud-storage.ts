@@ -2,13 +2,16 @@ import fs from 'fs';
 import { ENV } from 'configs/env';
 import { CustomError } from './error';
 import { storageBucket } from 'configs/storage-bucket';
+import { PutObjectRequest } from 'aws-sdk/clients/s3';
 
-export async function uploadToCloud(filePath: string) {
+type Folders = 'profile-images' | 'posts';
+
+export async function uploadToCloud(filePath: string, uploadFolder: Folders) {
   try {
     const fileContent = fs.readFileSync(filePath);
-    const params = {
+    const params: PutObjectRequest = {
       Bucket: ENV.STORAGE_BUCKET_NAME,
-      Key: `${Date.now()}-${filePath.split('/').pop()}`,
+      Key: `${uploadFolder}/${Date.now()}-${filePath.split('/').pop()}`,
       Body: fileContent,
     };
     const result = await storageBucket.upload(params).promise();
