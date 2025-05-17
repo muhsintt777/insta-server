@@ -23,13 +23,13 @@ export class PostsService {
     return result._id.toString();
   }
 
-  static async updatePostCaption(id: number, caption: string) {
+  static async updatePostCaption(id: string, caption: string) {
     const result = await PostModel.findByIdAndUpdate(id, { caption });
     if (!result) throw new Error('Post not found');
     return result._id.toString();
   }
 
-  static async deletePost(id: number) {
+  static async deletePost(id: string) {
     const result = await PostModel.findByIdAndDelete(id);
     if (!result) throw new Error('Post not found');
     return result._id.toString();
