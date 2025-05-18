@@ -8,6 +8,13 @@ import { validateId } from 'utils/common';
 export class PostsController {
   static async getAllPost(_req: Request, res: Response) {
     const result = await PostsService.getAllPost();
+    if (!result.length) res.status(204).json();
+    res.status(200).json(new ApiResponse(result));
+  }
+
+  static async getPost(req: Request, res: Response) {
+    const postId = validateId(req.params.id);
+    const result = await PostsService.getPost(postId);
     res.status(200).json(new ApiResponse(result));
   }
 
@@ -38,5 +45,12 @@ export class PostsController {
     const postId = validateId(req.params.id);
     const result = await PostsService.deletePost(postId);
     res.status(200).json(new ApiResponse({ id: result }, 'Post deleted'));
+  }
+
+  static async getCurrentUserPosts(req: Request, res: Response) {
+    const userId = req.token?.userId!;
+    const result = await PostsService.getCurrentUserPosts(userId);
+    if (!result.length) res.status(204).json();
+    res.status(200).json(new ApiResponse(result));
   }
 }
