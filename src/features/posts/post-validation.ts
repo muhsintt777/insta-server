@@ -7,7 +7,6 @@ export const createPostSchema = z.object({
       invalid_type_error: 'Caption must be string',
     })
     .trim(),
-  image: z.string({ required_error: 'Image is required' }),
 });
 
 export const updatePostCaptionSchema = z.object({

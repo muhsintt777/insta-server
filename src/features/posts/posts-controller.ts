@@ -4,6 +4,7 @@ import { PostsService } from './posts-service';
 import { createPostSchema, updatePostCaptionSchema } from './post-validation';
 import { uploadToCloud } from 'utils/cloud-storage';
 import { validateId } from 'utils/common';
+import { fileUploadValidation } from 'utils/file-upload-validation';
 
 export class PostsController {
   static async getAllPost(_req: Request, res: Response) {
@@ -19,17 +20,13 @@ export class PostsController {
   }
 
   static async addPost(req: Request, res: Response) {
-    const imagePath =
-      (req.files as { [fieldname: string]: Express.Multer.File[] })?.[
-        'image'
-      ]?.[0]?.path || null;
-    const { caption, image } = createPostSchema.parse({
+    const imagePath = fileUploadValidation(req, 'image');
+    const { caption } = createPostSchema.parse({
       ...req.body,
-      image: imagePath,
     });
 
     // handle file upload to cloud
-    const imageUrl = (await uploadToCloud(image, 'posts')).url;
+    const imageUrl = (await uploadToCloud(imagePath, 'posts')).url;
     const userId = req.token?.userId!;
     const result = await PostsService.addPost(caption, imageUrl, userId);
     res.status(201).json(new ApiResponse(result, 'Post created'));
