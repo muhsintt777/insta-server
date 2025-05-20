@@ -1,18 +1,39 @@
 import { Router } from 'express';
-import { PostsController } from './posts-controller';
 import { AuthMiddleware } from 'middlewares/auth-middleware';
+import { asyncHandler } from 'utils/async-handler';
+import { PostsController } from './posts-controller';
 
 const router = Router();
 
-router.post('/', AuthMiddleware.verifyToken, PostsController.addPost);
-router.put('/', AuthMiddleware.verifyToken, PostsController.updatePostCaption);
-router.get('/', AuthMiddleware.verifyToken, PostsController.getAllPost);
-router.get('/:id', AuthMiddleware.verifyToken, PostsController.getPost);
-router.delete('/:id', AuthMiddleware.verifyToken, PostsController.deletePost);
+router.post(
+  '/',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.addPost),
+);
+router.put(
+  '/',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.updatePostCaption),
+);
+router.get(
+  '/',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.getAllPost),
+);
+router.get(
+  '/:id',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.getPost),
+);
+router.delete(
+  '/:id',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.deletePost),
+);
 router.get(
   '/currentUser',
-  AuthMiddleware.verifyToken,
-  PostsController.getCurrentUserPosts,
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.getCurrentUserPosts),
 );
 
 export { router as postsRouter };
