@@ -12,14 +12,14 @@ router.get(
   asyncHandler(PostsController.getAllPost),
 );
 router.get(
+  '/currentuser',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.getCurrentUserPosts),
+);
+router.get(
   '/:id',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(PostsController.getPost),
-);
-router.get(
-  '/currentUser',
-  asyncHandler(AuthMiddleware.verifyToken),
-  asyncHandler(PostsController.getCurrentUserPosts),
 );
 
 router.post(
