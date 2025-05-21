@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import morgan from 'morgan';
 import { corsOptions } from 'configs/cors';
 import { appRouter } from './router';
 import { notFoundHandler } from './not-found-handler';
@@ -9,6 +10,7 @@ import { errorHandler } from './error-handler';
 
 const app = express();
 
+app.use(morgan(':method :url :status :response-time ms'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
