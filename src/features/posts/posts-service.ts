@@ -21,8 +21,8 @@ export class PostsService {
   static async addPost(caption: string, imageUrl: string, creator: string) {
     const result = await PostModel.create({
       caption,
-      imageUrl,
       creator,
+      image: imageUrl,
     });
     if (!result)
       throw new CustomError('INTERNAL_SERVER_ERROR', 'Failed to create post');
