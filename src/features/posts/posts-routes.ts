@@ -6,17 +6,6 @@ import { PostsController } from './posts-controller';
 
 const router = Router();
 
-router.post(
-  '/',
-  asyncHandler(AuthMiddleware.verifyToken),
-  fileUpload.fields([{ name: 'image', maxCount: 1 }]),
-  asyncHandler(PostsController.addPost),
-);
-router.put(
-  '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
-  asyncHandler(PostsController.updatePostCaption),
-);
 router.get(
   '/',
   asyncHandler(AuthMiddleware.verifyToken),
@@ -27,15 +16,29 @@ router.get(
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(PostsController.getPost),
 );
-router.delete(
-  '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
-  asyncHandler(PostsController.deletePost),
-);
 router.get(
   '/currentUser',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(PostsController.getCurrentUserPosts),
+);
+
+router.post(
+  '/',
+  asyncHandler(AuthMiddleware.verifyToken),
+  fileUpload.fields([{ name: 'image', maxCount: 1 }]),
+  asyncHandler(PostsController.addPost),
+);
+
+router.put(
+  '/:id',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.updatePostCaption),
+);
+
+router.delete(
+  '/:id',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(PostsController.deletePost),
 );
 
 export { router as postsRouter };
