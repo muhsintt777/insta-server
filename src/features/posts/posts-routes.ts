@@ -13,7 +13,7 @@ router.post(
   asyncHandler(PostsController.addPost),
 );
 router.put(
-  '/',
+  '/:id',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(PostsController.updatePostCaption),
 );

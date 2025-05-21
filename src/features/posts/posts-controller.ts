@@ -33,8 +33,9 @@ export class PostsController {
   }
 
   static async updatePostCaption(req: Request, res: Response) {
-    const { caption, id } = updatePostCaptionSchema.parse(req.body);
-    const result = await PostsService.updatePostCaption(id, caption);
+    const postId = validateId(req.params.id);
+    const { caption } = updatePostCaptionSchema.parse(req.body);
+    const result = await PostsService.updatePostCaption(postId, caption);
     res.status(200).json(new ApiResponse({ id: result }, 'Post updated'));
   }
 

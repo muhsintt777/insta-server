@@ -10,10 +10,6 @@ export const createPostSchema = z.object({
 });
 
 export const updatePostCaptionSchema = z.object({
-  id: z.string({
-    required_error: 'Post ID is required',
-    invalid_type_error: 'Post ID must be string',
-  }),
   caption: z
     .string({
       required_error: 'Caption is required',
