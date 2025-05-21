@@ -1,4 +1,6 @@
+import { isValidObjectId } from 'mongoose';
 import { z, ZodError } from 'zod';
+import { CustomError } from './error';
 
 export const getZodErrMessage = (payload: ZodError): string => {
   return (
@@ -7,9 +9,6 @@ export const getZodErrMessage = (payload: ZodError): string => {
 };
 
 export const validateId = (id: any): string => {
-  const idSchema = z.string({
-    required_error: 'ID is required',
-    invalid_type_error: 'ID must be string',
-  });
-  return idSchema.parse(id);
+  if (isValidObjectId(id)) return id;
+  throw new CustomError('VALIDATION_ERROR', 'Invalid ID');
 };
