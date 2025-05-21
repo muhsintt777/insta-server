@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/core/server.ts",
     "start": "node ./dist/core/server.js",
     "build": "tsc && tsc-alias",
-    "dev": "ts-node-dev -r tsconfig-paths/register -P tsconfig.json ./src/core/server.ts",
     "format": "prettier --write './src/**/*.{ts,js,json,md}'",
     "test": "jest",
     "test:watch": "jest --watch"
