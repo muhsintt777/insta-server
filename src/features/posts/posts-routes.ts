@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { AuthMiddleware } from 'middlewares/auth-middleware';
+import { fileUpload } from 'middlewares/file-upload-middleware';
 import { asyncHandler } from 'utils/async-handler';
 import { PostsController } from './posts-controller';
-import { fileUpload } from 'middlewares/file-upload-middleware';
 
 const router = Router();
 
