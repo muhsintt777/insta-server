@@ -40,4 +40,22 @@ export class PostsService {
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
     return result._id.toString();
   }
+
+  static async incrementLikeCount(id: string) {
+    const result = await PostModel.findByIdAndUpdate(
+      id,
+      { $inc: { likeCount: 1 } },
+      { new: true },
+    );
+    if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
+  }
+
+  static async decrementLikeCount(id: string) {
+    const result = await PostModel.findByIdAndUpdate(
+      id,
+      { $inc: { likeCount: -1 } },
+      { new: true },
+    );
+    if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
+  }
 }
