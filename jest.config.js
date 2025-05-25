@@ -13,7 +13,7 @@ module.exports = {
     'configs/(.*)': '<rootDir>/src/configs/$1',
     'utils/(.*)': '<rootDir>/src/utils/$1',
     'core/(.*)': '<rootDir>/src/core/$1',
-    'features/(.*)': '<rootDir>/src/features/$1',
+    'apis/(.*)': '<rootDir>/src/apis/$1',
     'middlewares/(.*)': '<rootDir>/src/middlewares/$1',
   },
 };

@@ -1,5 +1,5 @@
-import { User } from 'features/users/user';
-import { UserModel } from 'features/users/user-model';
+import { User } from 'apis/users/user';
+import { UserModel } from 'apis/users/user-model';
 import { Crypto } from 'utils/crypto';
 import { CustomError } from 'utils/error';
 import { Token } from 'utils/token';
