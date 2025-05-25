@@ -1,6 +1,8 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
+import { LikeCreateAttributes } from './likes';
+import { getCommonJsonTransformConfig } from 'utils/common';
 
-const likeSchema = new Schema(
+const likeSchema = new Schema<LikeCreateAttributes>(
   {
     postId: {
       type: SchemaTypes.ObjectId,
@@ -13,7 +15,10 @@ const likeSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: getCommonJsonTransformConfig(),
+  },
 );
 
 export const LikeModel = model('Like', likeSchema);
