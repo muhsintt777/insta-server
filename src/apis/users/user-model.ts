@@ -2,6 +2,7 @@ import { model, Schema, SchemaTypes } from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import { Crypto } from 'utils/crypto';
 import { UserCreateAttributes } from './user';
+import { getCommonJsonTransformConfig } from 'utils/common';
 
 const userSchema = new Schema<UserCreateAttributes>(
   {
@@ -48,15 +49,10 @@ const userSchema = new Schema<UserCreateAttributes>(
     timestamps: true,
 
     // calling .lean() on document will cause issues with this config!!
-    toJSON: {
-      transform(_doc, ret) {
-        delete ret.password;
-        delete ret.refreshToken;
-        delete ret.__v;
-        ret.id = ret._id;
-        delete ret._id;
-      },
-    },
+    toJSON: getCommonJsonTransformConfig((_doc: any, ret: any) => {
+      delete ret.password;
+      delete ret.refreshToken;
+    }),
   },
 );
 

@@ -1,4 +1,5 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
+import { getCommonJsonTransformConfig } from 'utils/common';
 
 const friendRequestSchema = new Schema(
   {
@@ -17,7 +18,7 @@ const friendRequestSchema = new Schema(
       default: 1,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
 
 export const FriendRequestModel = model('Friend_Request', friendRequestSchema);

@@ -1,4 +1,5 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
+import { getCommonJsonTransformConfig } from 'utils/common';
 
 const commentSchema = new Schema(
   {
@@ -17,7 +18,7 @@ const commentSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
 
 export const CommentModel = model('Comment', commentSchema);

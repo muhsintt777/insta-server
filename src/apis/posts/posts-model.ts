@@ -1,5 +1,6 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
 import { PostCreateAttributes } from './posts';
+import { getCommonJsonTransformConfig } from 'utils/common';
 
 const postSchema = new Schema<PostCreateAttributes>(
   {
@@ -24,7 +25,7 @@ const postSchema = new Schema<PostCreateAttributes>(
       default: 0,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
 
 export const PostModel = model('Post', postSchema);
