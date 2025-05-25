@@ -10,7 +10,7 @@ import { errorHandler } from './error-handler';
 
 const app = express();
 
-app.use(morgan(':method :url :status :response-time ms'));
+app.use(morgan(':method :url :status'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
