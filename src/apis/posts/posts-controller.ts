@@ -14,7 +14,7 @@ export class PostsController {
   }
 
   static async getPost(req: Request, res: Response) {
-    const postId = validateId(req.params.id);
+    const postId = validateId(req.params.id).id;
     const result = await PostsService.getPost(postId);
     res.status(200).json(new ApiResponse(result));
   }
@@ -33,14 +33,14 @@ export class PostsController {
   }
 
   static async updatePostCaption(req: Request, res: Response) {
-    const postId = validateId(req.params.id);
+    const postId = validateId(req.params.id).id;
     const { caption } = updatePostCaptionSchema.parse(req.body);
     const result = await PostsService.updatePostCaption(postId, caption);
     res.status(200).json(new ApiResponse({ id: result }, 'Post updated'));
   }
 
   static async deletePost(req: Request, res: Response) {
-    const postId = validateId(req.params.id);
+    const postId = validateId(req.params.id).id;
     const result = await PostsService.deletePost(postId);
     res.status(200).json(new ApiResponse({ id: result }, 'Post deleted'));
   }

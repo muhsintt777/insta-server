@@ -58,4 +58,22 @@ export class PostsService {
     );
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
   }
+
+  static async incrementCommentCount(id: string) {
+    const result = await PostModel.findByIdAndUpdate(
+      id,
+      { $inc: { commentCount: 1 } },
+      { new: true },
+    );
+    if (!result) throw new CustomError('RESOURCE_CONFLICT', 'Post not found');
+  }
+
+  static async decreamentCommentCount(id: string) {
+    const result = await PostModel.findByIdAndUpdate(
+      id,
+      { $inc: { commentCount: -1 } },
+      { new: true },
+    );
+    if (!result) throw new CustomError('RESOURCE_CONFLICT', 'Post not found');
+  }
 }

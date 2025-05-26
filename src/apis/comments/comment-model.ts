@@ -1,7 +1,8 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
 import { getCommonJsonTransformConfig } from 'utils/common';
+import { CommentCreateAttributes } from './comments';
 
-const commentSchema = new Schema(
+const commentSchema = new Schema<CommentCreateAttributes>(
   {
     content: {
       type: SchemaTypes.String,
