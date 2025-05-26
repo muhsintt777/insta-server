@@ -5,6 +5,6 @@
 Node version 22
 yarn
 
-## VS Code Extentions Names
+## Required VS Code Extentions
 
 Prettier - Code formatter
