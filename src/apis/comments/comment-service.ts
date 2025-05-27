@@ -29,4 +29,8 @@ export class CommentService {
     );
     return result;
   }
+
+  static async deleteCommentsByPostId(postId: string) {
+    await CommentModel.deleteMany({ postId });
+  }
 }

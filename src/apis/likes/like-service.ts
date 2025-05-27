@@ -43,4 +43,8 @@ export class LikeService {
       );
     return likes;
   }
+
+  static async deleteLikesByPostId(postId: string) {
+    await LikeModel.deleteMany({ postId });
+  }
 }
