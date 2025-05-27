@@ -19,3 +19,13 @@ export const createCommentSchama = z.object({
     { message: 'Invalid creator ID' },
   ),
 });
+
+export const updateCommentSchema = z.object({
+  content: z
+    .string({
+      required_error: 'Content is required',
+      invalid_type_error: 'Content must be a string',
+    })
+    .trim()
+    .min(1, 'Content is too small'),
+});
