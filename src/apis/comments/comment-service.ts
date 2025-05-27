@@ -13,6 +13,17 @@ export class CommentService {
     return result._id.toString();
   }
 
+  static async updateComment(id: string, content: string) {
+    const result = await CommentModel.findByIdAndUpdate(
+      id,
+      { content },
+      { new: true },
+    );
+    if (!result)
+      throw new CustomError('RESOURCE_NOT_FOUND', 'Comment not found');
+    return result._id.toString();
+  }
+
   static async deleteComment(id: string) {
     const result = await CommentModel.findByIdAndDelete(id);
     if (!result)

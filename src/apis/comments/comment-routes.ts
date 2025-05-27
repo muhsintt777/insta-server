@@ -17,6 +17,12 @@ router.post(
   asyncHandler(CommentController.createComment),
 );
 
+router.put(
+  '/:id',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(CommentController.updateComment),
+);
+
 router.delete(
   '/:id',
   asyncHandler(AuthMiddleware.verifyToken),
