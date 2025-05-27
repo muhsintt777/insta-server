@@ -5,10 +5,22 @@ import { CommentController } from './comment-controller';
 
 const router = Router();
 
+router.get(
+  '/post/:postId',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(CommentController.getPostComments),
+);
+
 router.post(
   '/',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(CommentController.createComment),
+);
+
+router.delete(
+  '/:id',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(CommentController.deleteComment),
 );
 
 export { router as commentRouter };
