@@ -1,7 +1,8 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
 import { getCommonJsonTransformConfig } from 'utils/common';
-import { LikeService } from 'apis/likes/like-service';
+import { CloudStorage } from 'utils/cloud-storage';
 import { CommentService } from 'apis/comments/comment-service';
+import { LikeService } from 'apis/likes/like-service';
 import { PostCreateAttributes } from './posts';
 
 const postSchema = new Schema<PostCreateAttributes>(
@@ -35,8 +36,13 @@ postSchema.pre('findOneAndDelete', async function (next) {
   const docToDelete = await this.model.findOne(this.getQuery());
   if (docToDelete) {
     const postId = docToDelete._id.toString();
+
+    // Delete related comments, likes, files
     await CommentService.deleteCommentsByPostId(postId);
     await LikeService.deleteLikesByPostId(postId);
+    if (docToDelete.image) {
+      await CloudStorage.deleteFile(docToDelete.image);
+    }
   }
   next();
 });
