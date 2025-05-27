@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ApiResponse } from 'utils/api-response';
 import { PostsService } from './posts-service';
 import { createPostSchema, updatePostCaptionSchema } from './post-validation';
-import { uploadToCloud } from 'utils/cloud-storage';
+import { CloudStorage } from 'utils/cloud-storage';
 import { validateId } from 'utils/common';
 import { fileUploadValidation } from 'utils/file-upload-validation';
 
@@ -26,7 +26,7 @@ export class PostsController {
     });
 
     // handle file upload to cloud
-    const imageUrl = (await uploadToCloud(imagePath, 'posts')).url;
+    const imageUrl = (await CloudStorage.uploadFile(imagePath, 'posts')).url;
     const userId = req.token?.userId!;
     const result = await PostsService.addPost(caption, imageUrl, userId);
     res.status(201).json(new ApiResponse(result, 'Post created'));

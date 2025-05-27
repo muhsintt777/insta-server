@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ApiResponse } from 'utils/api-response';
-import { uploadToCloud } from 'utils/cloud-storage';
+import { CloudStorage } from 'utils/cloud-storage';
 import { UserService } from './user-service';
 import { CreateUserReqSchema, UserIdSchema } from './user-validation';
 
@@ -30,7 +30,7 @@ export class UserController {
     let profileImageUrl: string | null = null;
     if (profileImageLocalPath) {
       profileImageUrl = (
-        await uploadToCloud(profileImageLocalPath, 'profile-images')
+        await CloudStorage.uploadFile(profileImageLocalPath, 'profile-images')
       ).url;
     }
 
