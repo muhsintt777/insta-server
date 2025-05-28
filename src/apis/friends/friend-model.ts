@@ -1,6 +1,8 @@
 import { model, Schema, SchemaTypes } from 'mongoose';
+import { getCommonJsonTransformConfig } from 'utils/common';
+import { FriendCreateAttributes } from './friend';
 
-const friendSchema = new Schema(
+const friendSchema = new Schema<FriendCreateAttributes>(
   {
     userId1: {
       type: SchemaTypes.ObjectId,
@@ -13,7 +15,7 @@ const friendSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
 
 export const FriendModel = model('Friend', friendSchema);
