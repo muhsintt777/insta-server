@@ -9,6 +9,9 @@ export class FriendService {
         { userId1: userId2, userId2: userId1 },
       ],
     });
+    if (!friend) {
+      throw new CustomError('RESOURCE_NOT_FOUND', 'Friendship not found');
+    }
 
     return friend || null;
   }
@@ -21,19 +24,19 @@ export class FriendService {
     return friends;
   }
 
-  static async createFriend(userId1: string, userId2: string) {
+  static async createFriend(currentUserId: string, userId: string) {
     const isFriend = await FriendModel.findOne({
       $or: [
-        { userId1, userId2 },
-        { userId1: userId2, userId2: userId1 },
+        { userId1: currentUserId, userId2: userId },
+        { userId1: userId, userId2: currentUserId },
       ],
     });
     if (isFriend)
       throw new CustomError('RESOURCE_CONFLICT', 'Friendship already exists');
 
     const friend = await FriendModel.create({
-      userId1,
-      userId2,
+      userId1: currentUserId,
+      userId2: userId,
     });
     return friend._id.toString();
   }
