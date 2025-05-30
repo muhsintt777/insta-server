@@ -9,11 +9,12 @@ export const getZodErrMessage = (payload: ZodError): string => {
 };
 
 export const validateId = (id: any, safe: boolean = false) => {
+  id.replace?.(/^\s+|\s+$/g, ''); // trim whitespace
   const isValid = isValidObjectId(id);
   if (!safe && !isValid) {
     throw new CustomError('VALIDATION_ERROR', 'Invalid ID');
   }
-  return { id, isValid };
+  return { id, isValid } as { id: string; isValid: boolean };
 };
 
 export const getCommonJsonTransformConfig = (
