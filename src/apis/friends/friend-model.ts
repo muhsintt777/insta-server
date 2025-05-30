@@ -14,6 +14,11 @@ const friendSchema = new Schema<FriendCreateAttributes>(
       ref: 'User',
       required: true,
     },
+    status: {
+      type: SchemaTypes.String,
+      enum: ['PENDING', 'ACCEPTED', 'REJECTED'],
+      default: 'PENDING',
+    },
   },
   { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
