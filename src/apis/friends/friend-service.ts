@@ -87,8 +87,8 @@ export class FriendService {
     });
     if (!friend) {
       throw new CustomError(
-        'FORBIDDEN',
-        'You can only delete friendships you are part of',
+        'BAD_REQUEST',
+        'Friendship not found or you are not part of it',
       );
     }
     return friend._id.toString();
