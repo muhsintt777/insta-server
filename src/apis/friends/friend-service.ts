@@ -24,6 +24,15 @@ export class FriendService {
     return friends;
   }
 
+  static async getFriendRequests(userId: string) {
+    const friendRequests = await FriendModel.find({
+      userId2: userId,
+      status: 'PENDING',
+    }).populate('userId1', 'username email profilePicture');
+
+    return friendRequests;
+  }
+
   static async createFriend(currentUserId: string, userId: string) {
     const isFriend = await FriendModel.findOne({
       $or: [
@@ -42,51 +51,41 @@ export class FriendService {
   }
 
   static async acceptFriendRequest(id: string, currentUserId: string) {
-    const friend = await FriendModel.findByIdAndUpdate(
-      id,
+    const friend = await FriendModel.findOneAndUpdate(
+      { _id: id, status: 'PENDING', userId2: currentUserId },
       { status: 'ACCEPTED' },
       { new: true },
     );
     if (!friend)
-      throw new CustomError('RESOURCE_NOT_FOUND', 'Friend request not found');
-
-    if (currentUserId !== friend.userId2.toString()) {
       throw new CustomError(
-        'FORBIDDEN',
-        'You can only accept friend requests sent to you',
+        'BAD_REQUEST',
+        'Friend request not found or already handled',
       );
-    }
+
     return friend._id.toString();
   }
 
   static async rejectFriendRequest(id: string, currentUserId: string) {
-    const friend = await FriendModel.findByIdAndUpdate(
-      id,
+    const friend = await FriendModel.findOneAndUpdate(
+      { _id: id, status: 'PENDING', userId2: currentUserId },
       { status: 'REJECTED' },
       { new: true },
     );
     if (!friend)
-      throw new CustomError('RESOURCE_NOT_FOUND', 'Friend request not found');
-
-    if (currentUserId !== friend.userId2.toString()) {
       throw new CustomError(
-        'FORBIDDEN',
-        'You can only reject friend requests sent to you',
+        'BAD_REQUEST',
+        'Friend request not found or already handled',
       );
-    }
+
     return friend._id.toString();
   }
 
   static async deleteFriend(friendShipId: string, currentUserId: string) {
-    const friend = await FriendModel.findByIdAndDelete(friendShipId);
+    const friend = await FriendModel.findOneAndDelete({
+      _id: friendShipId,
+      $or: [{ userId1: currentUserId }, { userId2: currentUserId }],
+    });
     if (!friend) {
-      throw new CustomError('RESOURCE_NOT_FOUND', 'Friendship not found');
-    }
-
-    if (
-      currentUserId !== friend.userId1.toString() &&
-      currentUserId !== friend.userId2.toString()
-    ) {
       throw new CustomError(
         'FORBIDDEN',
         'You can only delete friendships you are part of',
