@@ -77,8 +77,8 @@ export class FriendService {
     return friend._id.toString();
   }
 
-  static async deleteFriend(id: string, currentUserId: string) {
-    const friend = await FriendModel.findByIdAndDelete(id);
+  static async deleteFriend(friendShipId: string, currentUserId: string) {
+    const friend = await FriendModel.findByIdAndDelete(friendShipId);
     if (!friend) {
       throw new CustomError('RESOURCE_NOT_FOUND', 'Friendship not found');
     }
