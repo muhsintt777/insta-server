@@ -67,9 +67,12 @@ export class FriendController {
   }
 
   static async deleteFriend(req: Request, res: Response) {
-    const id = validateId(req.params.id).id;
+    const friendShipId = validateId(req.params.friendShipId).id;
     const currentUserId = validateId(req.token?.userId).id;
-    const result = await FriendService.deleteFriend(id, currentUserId);
+    const result = await FriendService.deleteFriend(
+      friendShipId,
+      currentUserId,
+    );
 
     res
       .status(200)
