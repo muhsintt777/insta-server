@@ -23,12 +23,6 @@ router.get(
   asyncHandler(FriendController.getFriendShipDetails),
 );
 
-router.delete(
-  '/:friendShipId',
-  asyncHandler(AuthMiddleware.verifyToken),
-  asyncHandler(FriendController.deleteFriend),
-);
-
 router.post(
   '/request/:userId',
   asyncHandler(AuthMiddleware.verifyToken),
@@ -45,6 +39,12 @@ router.put(
   '/reject/:id',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(FriendController.rejectFriendRequest),
+);
+
+router.delete(
+  '/:friendShipId',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(FriendController.deleteFriend),
 );
 
 export { router as friendRouter };
