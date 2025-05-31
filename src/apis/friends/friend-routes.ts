@@ -12,6 +12,12 @@ router.get(
 );
 
 router.get(
+  '/request',
+  asyncHandler(AuthMiddleware.verifyToken),
+  asyncHandler(FriendController.getFriendRequests),
+);
+
+router.get(
   '/:userId',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(FriendController.getFriendShipDetails),

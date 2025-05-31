@@ -33,6 +33,19 @@ export class FriendController {
       .json(new ApiResponse(result, 'Friends fetched successfully'));
   }
 
+  static async getFriendRequests(req: Request, res: Response) {
+    const userId = validateId(req.token?.userId).id;
+    const result = await FriendService.getFriendRequests(userId);
+
+    if (!result.length) {
+      res.status(204).json(new ApiResponse([], 'No friend requests found'));
+      return;
+    }
+    res
+      .status(200)
+      .json(new ApiResponse(result, 'Friend requests fetched successfully'));
+  }
+
   static async createFriend(req: Request, res: Response) {
     const currentUserId = validateId(req.token?.userId).id;
     const userId = validateId(req.params.userId).id;
