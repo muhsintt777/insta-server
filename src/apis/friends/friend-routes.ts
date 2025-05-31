@@ -18,7 +18,7 @@ router.get(
 );
 
 router.post(
-  '/request',
+  '/request/:userId',
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(FriendController.createFriend),
 );
@@ -40,3 +40,5 @@ router.delete(
   asyncHandler(AuthMiddleware.verifyToken),
   asyncHandler(FriendController.deleteFriend),
 );
+
+export { router as friendRouter };

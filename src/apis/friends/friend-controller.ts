@@ -35,7 +35,7 @@ export class FriendController {
 
   static async createFriend(req: Request, res: Response) {
     const currentUserId = validateId(req.token?.userId).id;
-    const userId = validateId(req.body.userId).id;
+    const userId = validateId(req.params.userId).id;
     if (currentUserId === userId) {
       throw new CustomError('BAD_REQUEST', 'Cannot befriend yourself');
     }
