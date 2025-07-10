@@ -9,7 +9,7 @@ export const getZodErrMessage = (payload: ZodError): string => {
 };
 
 export const validateId = (id: any, safe: boolean = false) => {
-  id.replace?.(/^\s+|\s+$/g, ''); // trim whitespace
+  id = id.replace?.(/^\s+|\s+$/g, '') ?? id; // trim whitespace
   const isValid = isValidObjectId(id);
   if (!safe && !isValid) {
     throw new CustomError('VALIDATION_ERROR', 'Invalid ID');

@@ -6,10 +6,13 @@
   "testMatch": ["**/__test__/**/*.test.ts"],
   "collectCoverageFrom": ["src/**/*.{ts,js}", "!src/**/*.d.ts"],
   "coverageDirectory": "<rootDir>/coverage",
-  "globals": {
-    "ts-jest": {
-      "tsconfig": "<rootDir>/tsconfig.json"
-    }
+  "transform": {
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        "tsconfig": "<rootDir>/tsconfig.json"
+      }
+    ]
   },
   "setupFiles": ["<rootDir>/jest.setup.js"],
   "setupFilesAfterEnv": [],
