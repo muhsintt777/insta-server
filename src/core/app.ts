@@ -7,6 +7,7 @@ import { appRouter } from './router';
 import { notFoundHandler } from './not-found-handler';
 import { healthHandler } from './health-handler';
 import { errorHandler } from './error-handler';
+import { metaDataHandler } from './meta-data';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', appRouter);
+app.use('/metadata', metaDataHandler);
 app.use('/health', healthHandler);
 app.use('/*', notFoundHandler);
 app.use(errorHandler);
