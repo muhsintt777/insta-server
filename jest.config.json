@@ -1,0 +1,23 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "roots": ["<rootDir>/src"],
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "testMatch": ["**/__test__/**/*.test.ts"],
+  "collectCoverageFrom": ["src/**/*.{ts,js}", "!src/**/*.d.ts"],
+  "coverageDirectory": "<rootDir>/coverage",
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "<rootDir>/tsconfig.json"
+    }
+  },
+  "setupFiles": ["<rootDir>/jest.setup.js"],
+  "setupFilesAfterEnv": [],
+  "resetMocks": true,
+  "clearMocks": true,
+  "restoreMocks": true,
+  "moduleNameMapper": {
+    "^utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^configs/(.*)$": "<rootDir>/src/configs/$1"
+  }
+}
