@@ -9,12 +9,14 @@ export class PostsService {
   }
 
   static async getAllPost() {
-    const result = await PostModel.find();
+    const result = await PostModel.find().sort({ createdAt: -1 });
     return result;
   }
 
   static async getCurrentUserPosts(userId: string) {
-    const result = await PostModel.find({ creator: userId });
+    const result = await PostModel.find({ creator: userId }).sort({
+      createdAt: -1,
+    });
     return result;
   }
 
