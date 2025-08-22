@@ -8,36 +8,36 @@ const router = Router();
 
 router.get(
   '/',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(PostsController.getAllPost),
 );
 router.get(
   '/currentuser',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(PostsController.getCurrentUserPosts),
 );
 router.get(
   '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(PostsController.getPost),
 );
 
 router.post(
   '/',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   fileUpload.fields([{ name: 'image', maxCount: 1 }]),
   asyncHandler(PostsController.addPost),
 );
 
 router.put(
   '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(PostsController.updatePostCaption),
 );
 
 router.delete(
   '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(PostsController.deletePost),
 );
 

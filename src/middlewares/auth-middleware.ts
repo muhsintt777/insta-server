@@ -11,7 +11,7 @@ declare global {
 }
 
 export class AuthMiddleware {
-  static async verifyToken(req: Request, _res: Response, next: NextFunction) {
+  static verifyToken(req: Request, _res: Response, next: NextFunction) {
     let token = req.cookies.accessToken;
     if (!token) token = req.headers.authorization;
     if (!token) token = req.body.token;

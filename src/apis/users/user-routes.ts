@@ -14,19 +14,19 @@ router.post(
 
 router.get(
   '/currentuser',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(UserController.getCurrentUser),
 );
 
 router.get(
   '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(UserController.getUser),
 );
 
 router.delete(
   '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(UserController.deleteUser),
 );
 

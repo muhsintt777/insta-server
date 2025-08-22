@@ -7,19 +7,19 @@ const router = Router();
 
 router.get(
   '/:postId',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(LikeController.getPostLikes),
 );
 
 router.post(
   '/',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(LikeController.createLike),
 );
 
 router.delete(
   '/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(LikeController.deleteLike),
 );
 

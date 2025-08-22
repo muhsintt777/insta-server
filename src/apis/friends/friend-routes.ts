@@ -7,43 +7,43 @@ const router = Router();
 
 router.get(
   '/',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.getFriends),
 );
 
 router.get(
   '/request',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.getFriendRequests),
 );
 
 router.get(
   '/:userId',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.getFriendShipDetails),
 );
 
 router.post(
   '/request/:userId',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.createFriend),
 );
 
 router.put(
   '/accept/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.acceptFriendRequest),
 );
 
 router.put(
   '/reject/:id',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.rejectFriendRequest),
 );
 
 router.delete(
   '/:friendShipId',
-  asyncHandler(AuthMiddleware.verifyToken),
+  AuthMiddleware.verifyToken,
   asyncHandler(FriendController.deleteFriend),
 );
 
