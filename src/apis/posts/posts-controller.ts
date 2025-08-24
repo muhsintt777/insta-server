@@ -7,9 +7,12 @@ import { validateId } from 'utils/common';
 import { fileUploadValidation } from 'utils/file-upload-validation';
 
 export class PostsController {
-  static async getAllPost(_req: Request, res: Response) {
+  static async getAllPost(_req: Request, res: Response): Promise<void> {
     const result = await PostsService.getAllPost();
-    if (!result.length) res.status(204).json();
+    if (!result.length) {
+      res.status(204).json();
+      return;
+    }
     res.status(200).json(new ApiResponse(result));
   }
 
@@ -45,10 +48,13 @@ export class PostsController {
     res.status(200).json(new ApiResponse({ id: result }, 'Post deleted'));
   }
 
-  static async getCurrentUserPosts(req: Request, res: Response) {
+  static async getCurrentUserPosts(req: Request, res: Response): Promise<void> {
     const userId = req.token?.userId!;
     const result = await PostsService.getCurrentUserPosts(userId);
-    if (!result.length) res.status(204).json();
+    if (!result.length) {
+      res.status(204).json();
+      return;
+    }
     res.status(200).json(new ApiResponse(result));
   }
 }
