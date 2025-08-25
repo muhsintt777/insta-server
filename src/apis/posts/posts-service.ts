@@ -2,21 +2,45 @@ import { CustomError } from 'utils/error';
 import { PostModel } from './posts-model';
 
 export class PostsService {
+  private static getCreatorPopulateConfig() {
+    return {
+      path: 'creator',
+      select: 'username fullName profileImage',
+      transform: (doc: any) => {
+        if (doc) {
+          return {
+            id: doc.id,
+            username: doc.username,
+            fullName: doc.fullName,
+            profileImage: doc.profileImage || null,
+          };
+        }
+        return doc;
+      },
+    };
+  }
+
   static async getPost(id: string) {
-    const result = await PostModel.findById(id);
+    const result = await PostModel.findById(id).populate(
+      this.getCreatorPopulateConfig(),
+    );
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
     return result;
   }
 
   static async getAllPost() {
-    const result = await PostModel.find().sort({ createdAt: -1 });
+    const result = await PostModel.find()
+      .sort({ createdAt: -1 })
+      .populate(this.getCreatorPopulateConfig());
     return result;
   }
 
   static async getCurrentUserPosts(userId: string) {
-    const result = await PostModel.find({ creator: userId }).sort({
-      createdAt: -1,
-    });
+    const result = await PostModel.find({ creator: userId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate(this.getCreatorPopulateConfig());
     return result;
   }
 
