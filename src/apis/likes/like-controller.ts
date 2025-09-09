@@ -15,8 +15,8 @@ export class LikeController {
   }
 
   static async deleteLike(req: Request, res: Response) {
-    const id = validateId(req.params.id).id;
-    await LikeService.deleteLike(id);
+    const postId = validateId(req.params.postId).id;
+    await LikeService.deleteLike(postId, req.token?.userId!);
 
     res.status(200).json(new ApiResponse(null, 'Like deleted successfully'));
   }

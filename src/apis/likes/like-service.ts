@@ -23,11 +23,8 @@ export class LikeService {
     return result._id.toString();
   }
 
-  static async deleteLike(id: string) {
-    const like = await LikeModel.findById(id);
-    if (!like) throw new CustomError('RESOURCE_NOT_FOUND', 'Like not found');
-    const postId = like.postId.toString();
-    await LikeModel.deleteOne({ _id: id });
+  static async deleteLike(postId: string, userId: string) {
+    await LikeModel.deleteOne({ postId, likedBy: userId });
     await PostsService.decrementLikeCount(postId);
   }
 
@@ -44,7 +41,7 @@ export class LikeService {
     return likes;
   }
 
-  static async deleteLikesByPostId(postId: string) {
+  static async deleteAllLikesForPost(postId: string) {
     await LikeModel.deleteMany({ postId });
   }
 }

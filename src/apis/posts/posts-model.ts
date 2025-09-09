@@ -39,7 +39,7 @@ postSchema.pre('findOneAndDelete', async function (next) {
 
     // Delete related comments, likes, files
     await CommentService.deleteCommentsByPostId(postId);
-    await LikeService.deleteLikesByPostId(postId);
+    await LikeService.deleteAllLikesForPost(postId);
     if (docToDelete.image) {
       await CloudStorage.deleteFile(docToDelete.image);
     }

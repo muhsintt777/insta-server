@@ -18,7 +18,7 @@ router.post(
 );
 
 router.delete(
-  '/:id',
+  '/:postId',
   AuthMiddleware.verifyToken,
   asyncHandler(LikeController.deleteLike),
 );
