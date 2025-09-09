@@ -23,6 +23,18 @@ export class LikeService {
     return result._id.toString();
   }
 
+  static async getUserLikedPostIds(userId: string, postIds: string[]) {
+    const likes = await LikeModel.find({
+      postId: { $in: postIds },
+      likedBy: userId,
+    })
+      .select('postId')
+      .lean();
+
+    if (!likes.length) return [];
+    return likes;
+  }
+
   static async deleteLike(postId: string, userId: string) {
     await LikeModel.deleteOne({ postId, likedBy: userId });
     await PostsService.decrementLikeCount(postId);

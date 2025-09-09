@@ -1,5 +1,6 @@
 import { CustomError } from 'utils/error';
 import { PostModel } from './posts-model';
+import { LikeService } from 'apis/likes/like-service';
 
 export class PostsService {
   private static getCreatorPopulateConfig() {
@@ -36,12 +37,22 @@ export class PostsService {
   }
 
   static async getCurrentUserPosts(userId: string) {
-    const result = await PostModel.find({ creator: userId })
-      .sort({
-        createdAt: -1,
-      })
-      .populate(this.getCreatorPopulateConfig());
-    return result;
+    const posts = await PostModel.find({ creator: userId })
+      .sort({ createdAt: -1 })
+      .populate(this.getCreatorPopulateConfig())
+      .limit(10)
+      .lean();
+
+    if (!posts.length) return [];
+
+    const postIds = posts.map((p: any) => p._id);
+    const likes = await LikeService.getUserLikedPostIds(userId, postIds);
+    const likedSet = new Set(likes.map((l: any) => l.postId.toString()));
+
+    return posts.map((p: any) => ({
+      ...p,
+      isLiked: likedSet.has(p._id.toString()),
+    }));
   }
 
   static async addPost(caption: string, imageUrl: string, creator: string) {

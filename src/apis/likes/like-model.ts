@@ -21,4 +21,7 @@ const likeSchema = new Schema<LikeCreateAttributes>(
   },
 );
 
+// Ensure a user can like a post only once and speed up lookups
+likeSchema.index({ postId: 1, likedBy: 1 }, { unique: true });
+
 export const LikeModel = model('Like', likeSchema);
