@@ -39,20 +39,29 @@ export class PostsService {
   static async getCurrentUserPosts(userId: string) {
     const posts = await PostModel.find({ creator: userId })
       .sort({ createdAt: -1 })
-      .populate(this.getCreatorPopulateConfig())
-      .limit(10)
-      .lean();
+      .limit(2)
+      .lean({
+        virtuals: true,
+        transform: (doc: any) => {
+          console.log('doc', doc);
+          doc.id = doc._id;
+          delete doc._id;
+          console.log('do2c', doc);
 
+          return doc;
+        },
+      })
+      .populate(this.getCreatorPopulateConfig());
     if (!posts.length) return [];
 
     const postIds = posts.map((p: any) => p._id);
     const likes = await LikeService.getUserLikedPostIds(userId, postIds);
     const likedSet = new Set(likes.map((l: any) => l.postId.toString()));
 
-    return posts.map((p: any) => ({
-      ...p,
-      isLiked: likedSet.has(p._id.toString()),
-    }));
+    posts.forEach((p: any) => {
+      p.isLiked = likedSet.has(p._id.toString());
+    });
+    return posts;
   }
 
   static async addPost(caption: string, imageUrl: string, creator: string) {
