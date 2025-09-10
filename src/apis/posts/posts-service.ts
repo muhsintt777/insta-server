@@ -10,7 +10,7 @@ export class PostsService {
       transform: (doc: any) => {
         if (doc) {
           return {
-            id: doc.id,
+            id: doc._id,
             username: doc.username,
             fullName: doc.fullName,
             profileImage: doc.profileImage || null,
@@ -39,19 +39,9 @@ export class PostsService {
   static async getCurrentUserPosts(userId: string) {
     const posts = await PostModel.find({ creator: userId })
       .sort({ createdAt: -1 })
-      .limit(2)
-      .lean({
-        virtuals: true,
-        transform: (doc: any) => {
-          console.log('doc', doc);
-          doc.id = doc._id;
-          delete doc._id;
-          console.log('do2c', doc);
-
-          return doc;
-        },
-      })
-      .populate(this.getCreatorPopulateConfig());
+      .limit(10)
+      .populate(this.getCreatorPopulateConfig())
+      .lean();
     if (!posts.length) return [];
 
     const postIds = posts.map((p: any) => p._id);
@@ -60,6 +50,9 @@ export class PostsService {
 
     posts.forEach((p: any) => {
       p.isLiked = likedSet.has(p._id.toString());
+      p.id = p._id;
+      delete p._id;
+      delete p.__v;
     });
     return posts;
   }
