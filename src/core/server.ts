@@ -9,8 +9,17 @@ import { app } from './app';
 const TEMP_DIR = 'public/temp';
 const port = ENV.PORT || 3500;
 
+function validateEnv() {
+  Object.entries(ENV).forEach(([key, value]) => {
+    if (value === undefined) {
+      throw new Error(`ENV variable <${key}> is not set`);
+    }
+  });
+}
+
 async function startServer() {
   try {
+    validateEnv();
     // create file upload directory
     if (!existsSync(TEMP_DIR)) {
       mkdirSync(TEMP_DIR, { recursive: true });
