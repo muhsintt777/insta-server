@@ -19,7 +19,7 @@ export class LikeService {
       postId,
       likedBy: userId,
     });
-    await PostsService.incrementLikeCount(postId);
+    await PostsService.updateLikeCount(postId, 'INCREMENT');
     return result._id.toString();
   }
 
@@ -37,7 +37,7 @@ export class LikeService {
 
   static async deleteLike(postId: string, userId: string) {
     await LikeModel.deleteOne({ postId, likedBy: userId });
-    await PostsService.decrementLikeCount(postId);
+    await PostsService.updateLikeCount(postId, 'DECREMENT');
   }
 
   static async getPostLikes(postId: string) {

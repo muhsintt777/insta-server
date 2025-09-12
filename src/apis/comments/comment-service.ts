@@ -9,7 +9,7 @@ export class CommentService {
       creator,
       postId,
     });
-    await PostsService.incrementCommentCount(postId);
+    await PostsService.updateCommentCount(postId, 'INCREMENT');
     return result._id.toString();
   }
 
@@ -29,7 +29,10 @@ export class CommentService {
     if (!result)
       throw new CustomError('RESOURCE_NOT_FOUND', 'Comment not found');
 
-    await PostsService.decreamentCommentCount(result.postId.toString());
+    await PostsService.updateCommentCount(
+      result.postId.toString(),
+      'DECREMENT',
+    );
     return result._id.toString();
   }
 
