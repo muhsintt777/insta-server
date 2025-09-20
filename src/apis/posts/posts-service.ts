@@ -29,10 +29,25 @@ export class PostsService {
     return result;
   }
 
-  static async getAllPost() {
+  static async getAllPost(userId: string) {
     const result = await PostModel.find()
       .sort({ createdAt: -1 })
-      .populate(this.getCreatorPopulateConfig());
+      .limit(10)
+      .populate(this.getCreatorPopulateConfig())
+      .lean();
+
+    if (!result.length) return [];
+
+    const postIds = result.map((p: any) => p._id);
+    const likes = await LikeService.getUserLikedPostIds(userId, postIds);
+    const likedSet = new Set(likes.map((l: any) => l.postId.toString()));
+
+    result.forEach((p: any) => {
+      p.isLiked = likedSet.has(p._id.toString());
+      p.id = p._id;
+      delete p._id;
+      delete p.__v;
+    });
     return result;
   }
 

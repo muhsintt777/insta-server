@@ -7,8 +7,8 @@ import { validateId } from 'utils/common';
 import { fileUploadValidation } from 'utils/file-upload-validation';
 
 export class PostsController {
-  static async getAllPost(_req: Request, res: Response): Promise<void> {
-    const result = await PostsService.getAllPost();
+  static async getAllPost(req: Request, res: Response): Promise<void> {
+    const result = await PostsService.getAllPost(req.token!.userId);
     if (!result.length) {
       res.status(204).json();
       return;
