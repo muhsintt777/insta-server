@@ -40,6 +40,14 @@ const userSchema = new Schema<UserCreateAttributes>(
       type: SchemaTypes.String,
       default: null,
     },
+    postCount: {
+      type: SchemaTypes.Number,
+      default: 0,
+    },
+    friendsCount: {
+      type: SchemaTypes.Number,
+      default: 0,
+    },
     refreshToken: {
       type: SchemaTypes.String,
       default: null,
