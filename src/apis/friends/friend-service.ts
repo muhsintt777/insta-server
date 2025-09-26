@@ -1,4 +1,5 @@
 import { CustomError } from 'utils/error';
+import { UserModel } from 'apis/users/user-model';
 import { FriendModel } from './friend-model';
 
 export class FriendService {
@@ -55,12 +56,21 @@ export class FriendService {
       { _id: id, status: 'PENDING', userId2: currentUserId },
       { status: 'ACCEPTED' },
       { new: true },
-    );
+    ).select('userId1 userId2');
     if (!friend)
       throw new CustomError(
         'BAD_REQUEST',
         'Friend request not found or already handled',
       );
+
+    await Promise.all([
+      UserModel.findByIdAndUpdate(friend.userId1, {
+        $inc: { friendsCount: 1 },
+      }),
+      UserModel.findByIdAndUpdate(friend.userId2, {
+        $inc: { friendsCount: 1 },
+      }),
+    ]);
 
     return friend._id.toString();
   }
@@ -84,13 +94,23 @@ export class FriendService {
     const friend = await FriendModel.findOneAndDelete({
       _id: friendShipId,
       $or: [{ userId1: currentUserId }, { userId2: currentUserId }],
-    });
+    }).select('userId1 userId2');
     if (!friend) {
       throw new CustomError(
         'BAD_REQUEST',
         'Friendship not found or you are not part of it',
       );
     }
+
+    await Promise.all([
+      UserModel.findByIdAndUpdate(friend.userId1, {
+        $inc: { friendsCount: -1 },
+      }),
+      UserModel.findByIdAndUpdate(friend.userId2, {
+        $inc: { friendsCount: -1 },
+      }),
+    ]);
+
     return friend._id.toString();
   }
 }
