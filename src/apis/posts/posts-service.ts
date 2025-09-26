@@ -1,6 +1,7 @@
 import { CustomError } from 'utils/error';
-import { PostModel } from './posts-model';
 import { LikeService } from 'apis/likes/like-service';
+import { UserModel } from 'apis/users/user-model';
+import { PostModel } from './posts-model';
 
 export class PostsService {
   private static getCreatorPopulateConfig() {
@@ -78,6 +79,10 @@ export class PostsService {
       creator,
       image: imageUrl,
     });
+    await UserModel.findByIdAndUpdate(creator, {
+      $inc: { postCount: 1 },
+    });
+
     if (!result)
       throw new CustomError('INTERNAL_SERVER_ERROR', 'Failed to create post');
     return result._id.toString();
@@ -90,8 +95,13 @@ export class PostsService {
   }
 
   static async deletePost(id: string) {
-    const result = await PostModel.findByIdAndDelete(id);
+    const result = await PostModel.findByIdAndDelete(id).select('creator');
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
+
+    await UserModel.findByIdAndUpdate(result.creator, {
+      $inc: { postCount: -1 },
+    });
+
     return result._id.toString();
   }
 
