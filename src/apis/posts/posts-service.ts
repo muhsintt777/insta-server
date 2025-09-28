@@ -106,20 +106,16 @@ export class PostsService {
   }
 
   static async updateLikeCount(id: string, type: 'INCREMENT' | 'DECREMENT') {
-    const result = await PostModel.findByIdAndUpdate(
-      id,
-      { $inc: { likeCount: type === 'INCREMENT' ? 1 : -1 } },
-      { new: true },
-    );
+    const result = await PostModel.findByIdAndUpdate(id, {
+      $inc: { likeCount: type === 'INCREMENT' ? 1 : -1 },
+    });
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
   }
 
   static async updateCommentCount(id: string, type: 'INCREMENT' | 'DECREMENT') {
-    const result = await PostModel.findByIdAndUpdate(
-      id,
-      { $inc: { commentCount: type === 'INCREMENT' ? 1 : -1 } },
-      { new: true },
-    );
+    const result = await PostModel.findByIdAndUpdate(id, {
+      $inc: { commentCount: type === 'INCREMENT' ? 1 : -1 },
+    });
     if (!result) throw new CustomError('RESOURCE_CONFLICT', 'Post not found');
   }
 }
