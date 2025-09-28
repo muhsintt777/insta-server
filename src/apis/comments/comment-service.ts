@@ -37,10 +37,10 @@ export class CommentService {
   }
 
   static async getPostComments(postId: string) {
-    const result = await CommentModel.find({ postId }).populate(
-      'creator',
-      'username profileImage',
-    );
+    const result = await CommentModel.find({ postId })
+      .sort({ createdAt: -1, _id: -1 })
+      .limit(50)
+      .populate('creator', 'username profileImage');
     return result;
   }
 
