@@ -31,6 +31,8 @@ const postSchema = new Schema<PostCreateAttributes>(
   { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
 
+postSchema.index({ createdAt: -1, _id: -1 });
+
 // Hook to delete comments and likes before a post is deleted
 postSchema.pre('findOneAndDelete', async function (next) {
   const docToDelete = await this.model.findOne(this.getQuery());

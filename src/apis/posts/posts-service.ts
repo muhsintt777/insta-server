@@ -32,7 +32,7 @@ export class PostsService {
 
   static async getAllPost(userId: string) {
     const result = await PostModel.find()
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .limit(10)
       .populate(this.getCreatorPopulateConfig())
       .lean();
@@ -54,7 +54,7 @@ export class PostsService {
 
   static async getCurrentUserPosts(userId: string) {
     const posts = await PostModel.find({ creator: userId })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .limit(10)
       .populate(this.getCreatorPopulateConfig())
       .lean();
