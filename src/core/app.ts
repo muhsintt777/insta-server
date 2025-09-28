@@ -8,6 +8,7 @@ import { notFoundHandler } from './not-found-handler';
 import { healthHandler } from './health-handler';
 import { errorHandler } from './error-handler';
 import { metaDataHandler } from './meta-data';
+import { syncRouter } from './sync';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', appRouter);
+// app.use('/sync', syncRouter);
 app.use('/metadata', metaDataHandler);
 app.use('/health', healthHandler);
 app.use('/*', notFoundHandler);
