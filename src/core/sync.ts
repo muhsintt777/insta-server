@@ -3,6 +3,7 @@ import { FriendModel } from 'apis/friends/friend-model';
 import { LikeModel } from 'apis/likes/like-model';
 import { PostModel } from 'apis/posts/posts-model';
 import { UserModel } from 'apis/users/user-model';
+import { CommentModel } from 'apis/comments/comment-model';
 
 const router = Router();
 
@@ -31,7 +32,7 @@ router.post('/users', async (req, res) => {
     }
 
     console.log('Syncing users completed.', { syncedUserCount });
-    res.status(200).json({ syncedUserCount });
+    res.status(200).json({ syncedUserCount, totalUsers });
   } catch (error) {
     console.error('Error in /sync/users:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -51,13 +52,16 @@ router.post('/posts', async (req, res) => {
       const post = await PostModel.findOne().skip(syncedPostCount).lean();
       if (!post) break;
       const likeCount = await LikeModel.countDocuments({ postId: post._id });
-      await PostModel.findByIdAndUpdate(post._id, { likeCount });
+      const commentCount = await CommentModel.countDocuments({
+        postId: post._id,
+      });
+      await PostModel.findByIdAndUpdate(post._id, { likeCount, commentCount });
       syncedPostCount++;
       console.log(`${i} - Post: ${post._id}, likeCount: ${likeCount}`);
     }
     console.log('Syncing posts completed.', { syncedPostCount });
 
-    res.status(200).json({ syncedPostCount });
+    res.status(200).json({ syncedPostCount, totalPosts });
   } catch (error) {
     console.error('Error in /sync/posts:', error);
     res.status(500).json({ message: 'Internal server error' });
