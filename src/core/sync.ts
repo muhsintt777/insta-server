@@ -1,6 +1,8 @@
+import { Router } from 'express';
+import { FriendModel } from 'apis/friends/friend-model';
+import { LikeModel } from 'apis/likes/like-model';
 import { PostModel } from 'apis/posts/posts-model';
 import { UserModel } from 'apis/users/user-model';
-import { Router } from 'express';
 
 const router = Router();
 
@@ -17,12 +19,18 @@ router.post('/users', async (req, res) => {
       const user = await UserModel.findOne().skip(syncedUserCount).lean();
       if (!user) break;
       const postCount = await PostModel.countDocuments({ creator: user._id });
-      await UserModel.findByIdAndUpdate(user._id, { postCount });
+      const friendsCount = await FriendModel.countDocuments({
+        status: 'ACCEPTED',
+        $or: [{ userId1: user._id }, { userId2: user._id }],
+      });
+      await UserModel.findByIdAndUpdate(user._id, { postCount, friendsCount });
       syncedUserCount++;
-      console.log(`${i} - User: ${user._id}, postCount: ${postCount}`);
+      console.log(
+        `${i} - User: ${user._id}, postCount: ${postCount}, friendsCount: ${friendsCount}`,
+      );
     }
 
-    console.log('Syncing users completed.');
+    console.log('Syncing users completed.', { syncedUserCount });
     res.status(200).json({ syncedUserCount });
   } catch (error) {
     console.error('Error in /sync/users:', error);
@@ -34,7 +42,22 @@ router.post('/users', async (req, res) => {
 router.post('/posts', async (req, res) => {
   try {
     console.log('Syncing posts...');
-    res.status(200).json({ message: 'Syncing posts started' });
+    let syncedPostCount = req.body.syncedPostCount || 0;
+    const totalPosts = await PostModel.countDocuments();
+    const remainingPosts = totalPosts - syncedPostCount;
+    console.log({ totalPosts, syncedPostCount, remainingPosts });
+
+    for (let i = 1; i <= remainingPosts; i++) {
+      const post = await PostModel.findOne().skip(syncedPostCount).lean();
+      if (!post) break;
+      const likeCount = await LikeModel.countDocuments({ postId: post._id });
+      await PostModel.findByIdAndUpdate(post._id, { likeCount });
+      syncedPostCount++;
+      console.log(`${i} - Post: ${post._id}, likeCount: ${likeCount}`);
+    }
+    console.log('Syncing posts completed.', { syncedPostCount });
+
+    res.status(200).json({ syncedPostCount });
   } catch (error) {
     console.error('Error in /sync/posts:', error);
     res.status(500).json({ message: 'Internal server error' });
