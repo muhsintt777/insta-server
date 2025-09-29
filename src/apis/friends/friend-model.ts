@@ -23,4 +23,7 @@ const friendSchema = new Schema<FriendCreateAttributes>(
   { timestamps: true, toJSON: getCommonJsonTransformConfig() },
 );
 
+friendSchema.index({ status: 1, userId1: 1 });
+friendSchema.index({ status: 1, userId2: 1 });
+
 export const FriendModel = model('Friend', friendSchema);
