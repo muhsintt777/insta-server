@@ -31,7 +31,27 @@ export const CreateUserReqSchema = z.object({
     .trim()
     .regex(REGEX.fullName, 'Full name is not valid'),
 });
+
+export const editUserReqSchema = z
+  .object({
+    fullName: z
+      .string()
+      .trim()
+      .regex(REGEX.fullName, 'Full name is not valid')
+      .optional(),
+    bio: z
+      .string()
+      .trim()
+      .max(200, 'Bio must be less than 200 characters')
+      .optional(),
+  })
+  .refine((data) => data.fullName || data.bio, {
+    message: 'Either fullName or bio is required',
+    path: ['fullName', 'bio'],
+  });
+
 export type CreateUserReqType = z.infer<typeof CreateUserReqSchema>;
+export type EditUserReqType = z.infer<typeof editUserReqSchema>;
 
 export const UserIdSchema = z
   .string({
