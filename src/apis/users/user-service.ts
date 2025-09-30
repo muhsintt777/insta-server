@@ -40,6 +40,14 @@ export class UserService {
     return result._id.toString();
   }
 
+  static async editUser(
+    id: string,
+    editDetails: { fullName?: string; bio?: string },
+  ) {
+    const result = await UserModel.findByIdAndUpdate(id, editDetails);
+    if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'User not found');
+  }
+
   static async deleteUser(id: string): Promise<string> {
     const result = await UserModel.findByIdAndDelete(id);
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'User not found');

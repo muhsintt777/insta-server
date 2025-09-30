@@ -2,7 +2,11 @@ import { Request, Response } from 'express';
 import { ApiResponse } from 'utils/api-response';
 import { CloudStorage } from 'utils/cloud-storage';
 import { UserService } from './user-service';
-import { CreateUserReqSchema, UserIdSchema } from './user-validation';
+import {
+  CreateUserReqSchema,
+  editUserReqSchema,
+  UserIdSchema,
+} from './user-validation';
 
 export class UserController {
   static async getCurrentUser(req: Request, res: Response) {
@@ -43,6 +47,13 @@ export class UserController {
     );
 
     res.status(201).json(new ApiResponse({ id: userID }, 'User created'));
+  }
+
+  static async EditUser(req: Request, res: Response) {
+    const userId = req.token?.userId!;
+    const { fullName, bio } = editUserReqSchema.parse(req.body);
+    await UserService.editUser(userId, { fullName, bio });
+    res.status(200).json(new ApiResponse(null, 'User updated'));
   }
 
   static async deleteUser(req: Request, res: Response) {

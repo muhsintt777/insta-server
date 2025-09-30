@@ -24,6 +24,12 @@ router.get(
   asyncHandler(UserController.getUser),
 );
 
+router.put(
+  '/currentuser',
+  AuthMiddleware.verifyToken,
+  asyncHandler(UserController.EditUser),
+);
+
 router.delete(
   '/:id',
   AuthMiddleware.verifyToken,
