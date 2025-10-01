@@ -27,7 +27,7 @@ router.get(
 router.put(
   '/currentuser',
   AuthMiddleware.verifyToken,
-  asyncHandler(UserController.EditUser),
+  asyncHandler(UserController.editUser),
 );
 
 router.delete(

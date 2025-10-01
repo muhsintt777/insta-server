@@ -49,7 +49,7 @@ export class UserController {
     res.status(201).json(new ApiResponse({ id: userID }, 'User created'));
   }
 
-  static async EditUser(req: Request, res: Response) {
+  static async editUser(req: Request, res: Response) {
     const userId = req.token?.userId!;
     const { fullName, bio } = editUserReqSchema.parse(req.body);
     await UserService.editUser(userId, { fullName, bio });
