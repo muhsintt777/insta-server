@@ -26,7 +26,7 @@ const userSchema = new Schema<UserCreateAttributes>(
     },
     bio: {
       type: SchemaTypes.String,
-      default: null,
+      default: '',
     },
     profileImage: {
       type: SchemaTypes.String,

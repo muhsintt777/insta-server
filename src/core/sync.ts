@@ -69,4 +69,24 @@ router.post('/posts', async (req, res) => {
   return;
 });
 
+router.post('/normalise', async (req, res) => {
+  try {
+    console.log('Normalizing user bios...');
+    // const result = await UserModel.updateMany(
+    //   { bio: null },
+    //   { $set: { bio: '' } },
+    // );
+    // console.log(
+    //   `Matched ${result.matchedCount}, Modified: ${result.modifiedCount}`,
+    // );
+
+    console.log('Normalization completed.');
+    res.status(200).json({ message: 'Normalization completed' });
+  } catch (error) {
+    console.error('Error in /sync/normalise:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+  return;
+});
+
 export { router as syncRouter };
