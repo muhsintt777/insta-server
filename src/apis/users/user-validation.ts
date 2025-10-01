@@ -29,7 +29,8 @@ export const CreateUserReqSchema = z.object({
       invalid_type_error: 'Full name must be string',
     })
     .trim()
-    .regex(REGEX.fullName, 'Full name is not valid'),
+    .regex(REGEX.fullName, 'Full name is not valid')
+    .max(100, 'Full name must be less than 100 characters'),
 });
 
 export const editUserReqSchema = z
@@ -38,6 +39,7 @@ export const editUserReqSchema = z
       .string()
       .trim()
       .regex(REGEX.fullName, 'Full name is not valid')
+      .max(100, 'Full name must be less than 100 characters')
       .optional(),
     bio: z
       .string()
@@ -45,7 +47,7 @@ export const editUserReqSchema = z
       .max(200, 'Bio must be less than 200 characters')
       .optional(),
   })
-  .refine((data) => data.fullName || data.bio, {
+  .refine((data) => data.fullName || data.bio || data.bio === '', {
     message: 'Either fullName or bio is required',
     path: ['fullName', 'bio'],
   });
