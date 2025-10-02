@@ -7,10 +7,6 @@ const router = Router();
 
 router.post('/login', asyncHandler(AuthController.login));
 router.post('/refresh', asyncHandler(AuthController.refreshToken));
-router.post(
-  '/logout',
-  AuthMiddleware.verifyToken,
-  asyncHandler(AuthController.logout),
-);
+router.post('/logout', asyncHandler(AuthController.logout));
 
 export { router as authRouter };
