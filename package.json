@@ -48,6 +48,7 @@
     "typescript": "^5.1.6"
   },
   "resolutions": {
-    "braces": "^3.0.3"
+    "braces": "^3.0.3",
+    "brace-expansion": "^1.1.12"
   }
 }
