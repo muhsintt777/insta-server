@@ -5,16 +5,10 @@ import { RateLimitMiddleware } from 'middlewares/rate-limiter-middleware';
 
 const router = Router();
 
-router.post(
-  '/login',
-  RateLimitMiddleware.auth,
-  asyncHandler(AuthController.login),
-);
-router.post(
-  '/refresh',
-  RateLimitMiddleware.auth,
-  asyncHandler(AuthController.refreshToken),
-);
+router.use(RateLimitMiddleware.auth);
+
+router.post('/login', asyncHandler(AuthController.login));
+router.post('/refresh', asyncHandler(AuthController.refreshToken));
 router.post('/logout', asyncHandler(AuthController.logout));
 
 export { router as authRouter };
