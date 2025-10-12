@@ -1,5 +1,5 @@
 import { isValidObjectId } from 'mongoose';
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import { CustomError } from './error';
 
 export const getZodErrMessage = (payload: ZodError): string => {
@@ -9,7 +9,6 @@ export const getZodErrMessage = (payload: ZodError): string => {
 };
 
 export const validateId = (id: any, safe: boolean = false) => {
-  id = id.replace?.(/^\s+|\s+$/g, '') ?? id; // trim whitespace
   const isValid = isValidObjectId(id);
   if (!safe && !isValid) {
     throw new CustomError('VALIDATION_ERROR', 'Invalid ID');

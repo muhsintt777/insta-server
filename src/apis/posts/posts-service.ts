@@ -105,12 +105,11 @@ export class PostsService {
     return result._id.toString();
   }
 
-  static async updateLikeCount(id: string, type: 'INCREMENT' | 'DECREMENT') {
-    // Prevent NoSQL injection: ensure id is not an object (e.g., a query operator)
-    if (typeof id !== 'string' || id.trim() === '' || id.startsWith('{')) {
-      throw new CustomError('VALIDATION_ERROR', 'Invalid ID');
-    }
-    const result = await PostModel.findByIdAndUpdate(id, {
+  static async updateLikeCount(
+    postId: string,
+    type: 'INCREMENT' | 'DECREMENT',
+  ) {
+    const result = await PostModel.findByIdAndUpdate(postId, {
       $inc: { likeCount: type === 'INCREMENT' ? 1 : -1 },
     });
     if (!result) throw new CustomError('RESOURCE_NOT_FOUND', 'Post not found');
