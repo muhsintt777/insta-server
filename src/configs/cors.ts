@@ -1,12 +1,8 @@
 import { CorsOptions } from 'cors';
-
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://insta-web-dev.netlify.app',
-];
+import { ENV } from './env';
 
 export const corsOptions: CorsOptions = {
-  origin: allowedOrigins,
+  origin: ENV.CORS_ALLOWED_ORIGINS,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
