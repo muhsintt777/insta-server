@@ -12,7 +12,6 @@ export const ENV = {
   STORAGE_BUCKET_SEC_KEY: process.env.STORAGE_BUCKET_SEC_KEY as string,
   STORAGE_BUCKET_NAME: process.env.STORAGE_BUCKET_NAME as string,
   CORS_ALLOWED_ORIGINS: [
-    'http://localhost:5173',
-    'https://insta-web-dev.netlify.app',
+    'https://insta-client-prod.onrender.com',
   ],
 };
