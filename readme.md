@@ -4,7 +4,7 @@ Modern TypeScript Express backend for an Instagram‑style social platform. Prov
 
 ## ✨ Features
 
-- User authentication (access + refresh tokens, httpOnly cookies)
+- User authentication (access + refresh tokens)
 - User management
 - Posts CRUD with pagination (aggregate paginate)
 - Comments & Likes
@@ -147,7 +147,7 @@ Always returned via `new ApiResponse(data, message, errorType)`.
 | Issue                | Check                                           |
 | -------------------- | ----------------------------------------------- |
 | Cannot connect to DB | Verify `MONGO_URI` & network access             |
-| 401 Unauthorized     | Missing/expired access token cookie/header      |
+| 401 Unauthorized     | Missing/expired access token                    |
 | 422 Validation Error | Zod schema mismatch; review request body        |
 | 500 Unknown Error    | See server logs; add more granular CustomErrors |
 

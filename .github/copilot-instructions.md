@@ -37,7 +37,6 @@ applyTo: '**'
 - **TypeScript Paths:** Use aliases as defined in `tsconfig.json` (`@utils/*`, `@configs/*`, etc.). Prefer these for imports.
 - **Validation:** Use Zod for request validation. Error messages are extracted via `getZodErrMessage` in `utils/common.ts`.
 - **File Uploads:** Temporary files stored in `public/temp`, created at server start (`core/server.ts`).
-- **Security:** Cookies are set with `secure`, `httpOnly`, and `sameSite` flags. JWT is used for authentication.
 
 ## Examples
 
