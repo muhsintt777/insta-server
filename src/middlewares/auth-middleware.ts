@@ -12,9 +12,7 @@ declare global {
 
 export class AuthMiddleware {
   static verifyToken(req: Request, _res: Response, next: NextFunction) {
-    let token = req.cookies.accessToken;
-    if (!token) token = req.headers.authorization;
-    if (!token) token = req.body.token;
+    const token = req.headers.authorization?.split?.(' ')?.[1];
     if (!token) {
       throw new CustomError('AUTH_UNAUTHORIZED', 'Token required');
     }
