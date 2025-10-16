@@ -17,7 +17,7 @@ export class RateLimitMiddleware {
   static default = rateLimit({
     ...this.config,
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 500,
+    max: 200,
   });
 
   static auth = rateLimit({
