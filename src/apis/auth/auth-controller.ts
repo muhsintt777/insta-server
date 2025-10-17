@@ -20,11 +20,17 @@ export class AuthController {
       });
     }
 
+    res.cookie('rt', tokens!.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 1000 * 60 * 60 * 24 * 15, // 15 days
+      path: '/api/auth/refresh',
+    });
     res.status(200).json(
       new ApiResponse(
         {
           accessToken: `Bearer ${tokens!.accessToken}`,
-          refreshToken: `Bearer ${tokens!.refreshToken}`,
         },
         'Login success',
       ),
@@ -32,7 +38,7 @@ export class AuthController {
   }
 
   static async refreshToken(req: Request, res: Response) {
-    const refreshToken = req.headers.authorization?.split?.(' ')?.[1];
+    const refreshToken = req.cookies.rt as string | undefined;
     if (!refreshToken)
       throw new CustomError('AUTH_UNAUTHORIZED', 'Token required');
 
@@ -56,6 +62,12 @@ export class AuthController {
     const userID = req.token?.userId;
     await AuthService.logout(userID!);
 
+    res.clearCookie('rt', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      path: '/api/auth/refresh',
+    });
     res.status(200).json(new ApiResponse({ id: userID }, 'Logout success'));
   }
 }
