@@ -30,7 +30,7 @@ export class AuthController {
     res.status(200).json(
       new ApiResponse(
         {
-          accessToken: `Bearer ${tokens!.accessToken}`,
+          accessToken: tokens!.accessToken,
         },
         'Login success',
       ),
@@ -50,12 +50,7 @@ export class AuthController {
 
     res
       .status(200)
-      .json(
-        new ApiResponse(
-          { accessToken: `Bearer ${newToken}` },
-          'Refresh success',
-        ),
-      );
+      .json(new ApiResponse({ accessToken: newToken }, 'Refresh success'));
   }
 
   static async logout(req: Request, res: Response) {
