@@ -17,10 +17,15 @@ export const errorHandler = (
   } else if (err instanceof ZodError) {
     const message = getZodErrMessage(err);
     res.status(422).json(new ApiResponse(null, message, 'VALIDATION_ERROR'));
+  } else if (err && (err as any).code === 'EBADCSRFTOKEN') {
+    res
+      .status(403)
+      .json(new ApiResponse(null, 'Invalid CSRF token', 'CSRF_ERROR'));
   } else {
     console.log('unknow err: ', err);
     res
       .status(500)
       .json(new ApiResponse(null, 'Something went wrong', 'UNKNOWN_ERROR'));
   }
+  return;
 };
