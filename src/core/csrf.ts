@@ -16,5 +16,5 @@ export const csrfProtection = csurf({
 export const csrfTokenRoute = (req: Request, res: Response) => {
   const token = (req as any).csrfToken() as string;
 
-  return res.json(new ApiResponse({ csrfToken: token }));
+  return res.status(200).json(new ApiResponse({ csrfToken: token }));
 };
