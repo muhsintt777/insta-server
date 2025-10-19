@@ -1,11 +1,11 @@
-import rateLimit, { Options } from 'express-rate-limit';
+import rateLimit, { Options, ipKeyGenerator } from 'express-rate-limit';
 import { CustomError } from 'utils/error';
 
 export class RateLimitMiddleware {
   private static config: Partial<Options> = {
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req) => req.ip ?? 'unknown',
+    keyGenerator: (req) => (req.ip ? ipKeyGenerator(req.ip) : 'unknown'),
     handler: () => {
       throw new CustomError(
         'TOO_MANY_REQUESTS',
