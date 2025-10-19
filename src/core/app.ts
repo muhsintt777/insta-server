@@ -10,7 +10,7 @@ import { healthHandler } from './health-handler';
 import { errorHandler } from './error-handler';
 import { metaDataHandler } from './meta-data';
 import { syncRouter } from './sync';
-import { csrfProtection, csrfTokenRoute } from './csrf';
+import { csrfProtection } from './csrf';
 
 const app = express();
 
@@ -23,7 +23,6 @@ app.use(cookieParser());
 app.use(csrfProtection);
 app.get('/health', healthHandler);
 app.get('/metadata', metaDataHandler);
-app.get('/csrf-token', csrfTokenRoute);
 app.use('/sync', syncRouter);
 app.use('/api', appRouter);
 app.use('/*', notFoundHandler);

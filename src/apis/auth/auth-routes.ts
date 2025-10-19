@@ -7,6 +7,7 @@ const router = Router();
 
 router.use(RateLimitMiddleware.auth);
 
+router.get('/csrf-token', asyncHandler(AuthController.getCsrfToken));
 router.post('/login', asyncHandler(AuthController.login));
 router.post('/refresh', asyncHandler(AuthController.refreshToken));
 router.post('/logout', asyncHandler(AuthController.logout));
