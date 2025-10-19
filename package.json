@@ -9,7 +9,10 @@
     "build": "tsc && tsc-alias",
     "format": "prettier --write './src/**/*.{ts,js,json,md}'",
     "test": "jest --config jest.config.json",
-    "test:watch": "jest --watch --config jest.config.json"
+    "test:watch": "jest --watch --config jest.config.json",
+    "bump:major": "node ./scripts/bumbUpVersion.js major",
+    "bump:minor": "node ./scripts/bumbUpVersion.js minor",
+    "bump:patch": "node ./scripts/bumbUpVersion.js patch"
   },
   "dependencies": {
     "aws-sdk": "^2.1692.0",
