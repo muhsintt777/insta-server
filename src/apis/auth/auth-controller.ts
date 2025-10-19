@@ -6,11 +6,6 @@ import { LoginReqSchema } from './auth-validation';
 import { AuthService } from './auth-service';
 
 export class AuthController {
-  static async getCsrfToken(req: Request, res: Response) {
-    res.status(200).json(new ApiResponse({ csrfToken: req.csrfToken() }));
-    return;
-  }
-
   static async login(req: Request, res: Response) {
     const { email, username, password } = LoginReqSchema.parse(req.body);
 
