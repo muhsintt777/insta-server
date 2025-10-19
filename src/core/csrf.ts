@@ -2,7 +2,6 @@ import { RequestHandler, Request, Response, NextFunction } from 'express';
 import csurf from 'csurf';
 import { ApiResponse } from 'utils/api-response';
 
-// Explicitly cast to Express RequestHandler to satisfy app.use typings
 export const csrfProtection = csurf({
   cookie: {
     key: '_csrfSecret',
