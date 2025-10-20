@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import { PutObjectRequest } from 'aws-sdk/clients/s3';
 import { ENV } from 'configs/env';
 import { storageBucket } from 'configs/storage-bucket';
@@ -9,14 +8,8 @@ type Folders = 'profile-images' | 'posts';
 
 export class CloudStorage {
   static async uploadFile(filePath: string, uploadFolder: Folders) {
-    const SAFE_UPLOAD_DIR = '/tmp'; // adjust if Multer uses another directory
     try {
-      // Validate that filePath is contained in SAFE_UPLOAD_DIR
-      const resolvedFilePath = path.resolve(filePath);
-      if (!resolvedFilePath.startsWith(path.resolve(SAFE_UPLOAD_DIR) + path.sep)) {
-        throw new CustomError('BAD_REQUEST', 'Invalid file path');
-      }
-      const fileContent = fs.readFileSync(resolvedFilePath);
+      const fileContent = fs.readFileSync(filePath);
 
       // create filename
       const originalName =
@@ -36,20 +29,13 @@ export class CloudStorage {
         Body: fileContent,
       };
       const result = await storageBucket.upload(params).promise();
-      fs.unlinkSync(resolvedFilePath);
+      fs.unlinkSync(filePath);
       return {
         url: result.Location,
         fileName: result.Key,
       };
     } catch (error) {
-      try {
-        const resolvedFilePath = path.resolve(filePath);
-        if (resolvedFilePath.startsWith(path.resolve(SAFE_UPLOAD_DIR) + path.sep)) {
-          fs.unlinkSync(resolvedFilePath);
-        }
-      } catch (_) {
-        // swallow error
-      }
+      fs.unlinkSync(filePath);
       throw new CustomError('INTERNAL_SERVER_ERROR', 'Failed to upload file');
     }
   }
