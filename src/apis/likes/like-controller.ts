@@ -7,7 +7,7 @@ export class LikeController {
   static async createLike(req: Request, res: Response) {
     const userId = req.token?.userId!;
     const postId = validateId(req.body.postId).id;
-    const result = await LikeService.createLike(postId, userId);
+    const result = await LikeService.createLike({ postId, userId });
 
     res
       .status(201)
