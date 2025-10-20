@@ -17,8 +17,7 @@ export class PostsController {
   }
 
   static async getPost(req: Request, res: Response) {
-    const postId = validateId(req.params.id).id;
-    const result = await PostsService.getPost(postId);
+    const result = await PostsService.getPost(req.params.id);
     res.status(200).json(new ApiResponse(result));
   }
 

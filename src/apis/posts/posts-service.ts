@@ -1,4 +1,5 @@
 import { CustomError } from 'utils/error';
+import { validateId } from 'utils/common';
 import { LikeService } from 'apis/likes/like-service';
 import { UserModel } from 'apis/users/user-model';
 import { PostModel } from './posts-model';
@@ -22,7 +23,9 @@ export class PostsService {
     };
   }
 
-  static async getPost(id: string) {
+  static async getPost(postId: string) {
+    const { id } = validateId(postId);
+
     const result = await PostModel.findById(id).populate(
       this.getCreatorPopulateConfig(),
     );
@@ -31,6 +34,7 @@ export class PostsService {
   }
 
   static async getAllPost(userId: string) {
+    const { id } = validateId(userId);
     const result = await PostModel.find()
       .sort({ createdAt: -1, _id: -1 })
       .limit(10)
@@ -40,7 +44,7 @@ export class PostsService {
     if (!result.length) return [];
 
     const postIds = result.map((p: any) => p._id);
-    const likes = await LikeService.getUserLikedPostIds(userId, postIds);
+    const likes = await LikeService.getUserLikedPostIds(id, postIds);
     const likedSet = new Set(likes.map((l: any) => l.postId.toString()));
 
     result.forEach((p: any) => {
@@ -53,7 +57,8 @@ export class PostsService {
   }
 
   static async getCurrentUserPosts(userId: string) {
-    const posts = await PostModel.find({ creator: userId })
+    const { id } = validateId(userId);
+    const posts = await PostModel.find({ creator: id })
       .sort({ createdAt: -1, _id: -1 })
       .limit(10)
       .populate(this.getCreatorPopulateConfig())
@@ -61,7 +66,7 @@ export class PostsService {
     if (!posts.length) return [];
 
     const postIds = posts.map((p: any) => p._id);
-    const likes = await LikeService.getUserLikedPostIds(userId, postIds);
+    const likes = await LikeService.getUserLikedPostIds(id, postIds);
     const likedSet = new Set(likes.map((l: any) => l.postId.toString()));
 
     posts.forEach((p: any) => {
