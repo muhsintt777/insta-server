@@ -37,7 +37,7 @@ export class Token {
       const decoded = jwt.verify(token, ENV.REFRESH_TOKEN_KEY);
       return decoded as RefreshTokenData;
     } catch (error) {
-      throw new CustomError('AUTH_UNAUTHORIZED', 'Invalid token');
+      throw new CustomError('SIGNED_OUT', 'Invalid token');
     }
   }
 }

@@ -39,8 +39,7 @@ export class AuthController {
 
   static async refreshToken(req: Request, res: Response) {
     const refreshToken = req.cookies.rt as string | undefined;
-    if (!refreshToken)
-      throw new CustomError('AUTH_UNAUTHORIZED', 'Token required');
+    if (!refreshToken) throw new CustomError('SIGNED_OUT', 'Token required');
 
     const decodedToken = Token.verifyRefreshToken(refreshToken);
     const newToken = await AuthService.refreshToken(

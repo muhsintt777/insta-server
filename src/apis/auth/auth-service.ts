@@ -59,7 +59,7 @@ export class AuthService {
   ): Promise<string> {
     const user = await UserModel.findById(userID);
     if (user?.refreshToken !== refreshToken)
-      throw new CustomError('AUTH_UNAUTHORIZED', 'Unauthorized');
+      throw new CustomError('SIGNED_OUT', 'Unauthorized');
 
     return Token.createAccessToken({ userId: user._id.toString() });
   }
