@@ -16,6 +16,15 @@ export const validateId = (id: any, safe: boolean = false) => {
   return { id, isValid } as { id: string; isValid: boolean };
 };
 
+export const validateMultipleIds = (...ids: string[]) => {
+  ids.forEach((id) => {
+    if (!isValidObjectId(id)) {
+      throw new CustomError('VALIDATION_ERROR', `Invalid ID`);
+    }
+  });
+  return ids;
+};
+
 export const getCommonJsonTransformConfig = (
   transform?: (_doc: any, ret: any) => void,
 ) => {

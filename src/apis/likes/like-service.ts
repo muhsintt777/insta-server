@@ -1,9 +1,12 @@
 import { PostsService } from 'apis/posts/posts-service';
-import { LikeModel } from './like-model';
 import { CustomError } from 'utils/error';
+import { validateId, validateMultipleIds } from 'utils/common';
+import { LikeModel } from './like-model';
+import { CreateLikeParam } from './likes';
 
 export class LikeService {
-  static async createLike(postId: string, userId: string) {
+  static async createLike(params: CreateLikeParam) {
+    const [postId, userId] = validateMultipleIds(params.postId, params.userId);
     const existingLike = await LikeModel.findOne({
       postId,
       likedBy: userId,

@@ -11,3 +11,8 @@ interface Like extends LikeCreateAttributes {
   _id: ObjectId;
   __v: number;
 }
+
+interface CreateLikeParam {
+  postId: string;
+  userId: string;
+}
