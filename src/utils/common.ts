@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { isObjectIdOrHexString, isValidObjectId } from 'mongoose';
 import { ZodError } from 'zod';
 import { CustomError } from './error';
 
@@ -18,7 +18,7 @@ export const validateId = (id: any, safe: boolean = false) => {
 
 export const validateMultipleIds = (...ids: string[]) => {
   ids.forEach((id) => {
-    if (!isValidObjectId(id)) {
+    if (!isObjectIdOrHexString(id)) {
       throw new CustomError('VALIDATION_ERROR', `Invalid ID`);
     }
   });
