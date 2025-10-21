@@ -2,7 +2,8 @@ import rateLimit, { Options, ipKeyGenerator } from 'express-rate-limit';
 import { CustomError } from 'utils/error';
 
 export class RateLimitMiddleware {
-  private static config: Partial<Options> = {
+  private static readonly WINDOW_MS_15_MINUTES = 15 * 60 * 1000;
+  private static readonly config: Partial<Options> = {
     standardHeaders: true,
     legacyHeaders: false,
     keyGenerator: (req) => (req.ip ? ipKeyGenerator(req.ip) : 'unknown'),
@@ -16,13 +17,13 @@ export class RateLimitMiddleware {
 
   static default = rateLimit({
     ...this.config,
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: this.WINDOW_MS_15_MINUTES,
     max: 200,
   });
 
   static auth = rateLimit({
     ...this.config,
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: this.WINDOW_MS_15_MINUTES,
     max: 20,
   });
 }
