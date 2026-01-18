@@ -7,7 +7,7 @@ const router = Router();
 
 router.get(
   '/current',
-  // AuthMiddleware.verifyToken,
+  AuthMiddleware.verifyToken,
   asyncHandler(WheatherController.getCurrentWeather),
 );
 
