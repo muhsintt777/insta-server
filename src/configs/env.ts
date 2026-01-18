@@ -14,4 +14,5 @@ export const ENV = {
     'http://localhost:5173',
     'https://insta-web-dev.netlify.app',
   ],
+  WHEATHER_CLENT_BASE_URL: 'https://api.open-meteo.com/v1',
 };
