@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ENV } from 'configs/env';
 import { CustomError } from 'utils/error';
+import { GeocodingClient } from './geocoding-client';
 
 const client = axios.create({
   baseURL: ENV.WHEATHER_CLENT_BASE_URL,
@@ -16,6 +17,7 @@ client.interceptors.response.use(
 );
 
 interface Wheather {
+  cityName: string;
   temperature: {
     value: number;
     unit: string;
@@ -72,11 +74,13 @@ export class WeatherClient {
       timeformat: 'unixtime',
     };
 
-    const response = await client.get('/forecast', {
-      params,
-    });
+    const [response, cityName] = await Promise.all([
+      client.get('/forecast', { params }),
+      GeocodingClient.getCityName(latitude, longitude),
+    ]);
 
     const weatherData: Wheather = {
+      cityName,
       temperature: {
         value: response.data.current.temperature_2m,
         unit: response.data.current_units.temperature_2m,

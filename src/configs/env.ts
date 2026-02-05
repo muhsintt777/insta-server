@@ -11,8 +11,9 @@ export const ENV = {
   STORAGE_BUCKET_SEC_KEY: process.env.STORAGE_BUCKET_SEC_KEY as string,
   STORAGE_BUCKET_NAME: process.env.STORAGE_BUCKET_NAME as string,
   CORS_ALLOWED_ORIGINS: [
-    'http://localhost:5173',
+    // 'http://localhost:5173',
     'https://insta-web-dev.netlify.app',
   ],
   WHEATHER_CLENT_BASE_URL: 'https://api.open-meteo.com/v1',
+  GEACODING_CLIENT_BASE_URL: 'https://nominatim.openstreetmap.org',
 };
