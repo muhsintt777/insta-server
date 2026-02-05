@@ -20,7 +20,23 @@ interface Wheather {
     value: number;
     unit: string;
   };
+  minTemperature: {
+    value: number;
+    unit: string;
+  };
+  maxTemperature: {
+    value: number;
+    unit: string;
+  };
+  humidity: {
+    value: number;
+    unit: string;
+  };
   windSpeed: {
+    value: number;
+    unit: string;
+  };
+  windDirection: {
     value: number;
     unit: string;
   };
@@ -43,7 +59,15 @@ export class WeatherClient {
     const params = {
       latitude,
       longitude,
-      current: ['temperature_2m', 'wind_speed_10m', 'weather_code', 'is_day'],
+      current: [
+        'temperature_2m',
+        'relative_humidity_2m',
+        'wind_speed_10m',
+        'wind_direction_10m',
+        'weather_code',
+        'is_day',
+      ],
+      daily: ['temperature_2m_max', 'temperature_2m_min'],
       timezone: 'auto',
       timeformat: 'unixtime',
     };
@@ -57,9 +81,25 @@ export class WeatherClient {
         value: response.data.current.temperature_2m,
         unit: response.data.current_units.temperature_2m,
       },
+      minTemperature: {
+        value: response.data.daily.temperature_2m_min[0],
+        unit: response.data.daily_units.temperature_2m_min,
+      },
+      maxTemperature: {
+        value: response.data.daily.temperature_2m_max[0],
+        unit: response.data.daily_units.temperature_2m_max,
+      },
+      humidity: {
+        value: response.data.current.relative_humidity_2m,
+        unit: response.data.current_units.relative_humidity_2m,
+      },
       windSpeed: {
         value: response.data.current.wind_speed_10m,
         unit: response.data.current_units.wind_speed_10m,
+      },
+      windDirection: {
+        value: response.data.current.wind_direction_10m,
+        unit: response.data.current_units.wind_direction_10m,
       },
       weatherCode: mapWeatherCode(response.data.current.weather_code),
       isDay: response.data.current.is_day === 1,
