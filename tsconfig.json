@@ -22,7 +22,7 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "baseUrl": "./src",
-    "rootDir": "./src",
+    "rootDir": ".",
     "paths": {
       "@configs/*": ["src/configs/*"],
       "@utils/*": ["src/utils/*"],
