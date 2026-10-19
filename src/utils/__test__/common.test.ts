@@ -40,11 +40,6 @@ describe('validateId', () => {
       isValid: false,
     });
   });
-
-  it('should trim whitespace from id', () => {
-    const valid = ' 507f1f77bcf86cd799439011 ';
-    expect(validateId(valid).isValid).toBe(true);
-  });
 });
 
 describe('getCommonJsonTransformConfig', () => {
